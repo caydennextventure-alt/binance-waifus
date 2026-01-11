@@ -4,13 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.jsdelivr.net https:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' blob: data: http://localhost:3000 https://api.elevenlabs.io https://api.openai.com https://*.supabase.co wss://*.supabase.co https://infragrid.v.network https://*.v.network https://vrm-eliza-ai-girlfriend.vercel.app https://*.railway.app https://vrm-elizaos-ai-girlfriend-production.up.railway.app https://api.xwaifus.com; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self';">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.jsdelivr.net https:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' blob: data: http://localhost:3000 https://api.elevenlabs.io https://api.openai.com https://*.supabase.co wss://*.supabase.co https://infragrid.v.network https://*.v.network https://vrm-eliza-ai-girlfriend.vercel.app https://*.railway.app https://vrm-elizaos-ai-girlfriend-production.up.railway.app https://api.xwaifus.com; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self';">
     <title data-i18n-title="app.title">AI Girlfriend Chat Game 🌸</title>
     <link rel="icon" type="image/png" href="assets/wallet/favicon-circle.png">
-    <link rel="stylesheet" href="chat-ui.css">
+    <link rel="stylesheet" href="chat-ui.css?v=anime_polish_v2">
     <link rel="stylesheet" href="wallet-ui.css">
     <link rel="stylesheet" href="chat-responsive.css">
-    
+    <!-- Google Fonts for handwriting style -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Gochi+Hand&family=Indie+Flower&family=Patrick+Hand&display=swap"
+        rel="stylesheet">
+
     <!-- Configuration files -->
     <script src="config.js"></script>
     <!-- Auto-generated character i18n (must load before i18n.js) -->
@@ -59,15 +66,15 @@
             margin-top: 5px;
             margin-left: 5px;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        
+
         .voice-play-btn:hover {
             background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
             transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-        
+
         .voice-play-btn:active {
             transform: translateY(0);
         }
@@ -113,6 +120,7 @@
                 opacity: 0;
                 transform: translateX(-50%) translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(-50%) translateY(0);
@@ -123,6 +131,7 @@
             from {
                 opacity: 1;
             }
+
             to {
                 opacity: 0;
             }
@@ -179,9 +188,17 @@
             cursor: pointer;
         }
 
-        .minimize-btn { background: #ffd23f; }
-        .maximize-btn { background: #28ca42; }
-        .close-btn { background: #ff5f57; }
+        .minimize-btn {
+            background: #ffd23f;
+        }
+
+        .maximize-btn {
+            background: #28ca42;
+        }
+
+        .close-btn {
+            background: #ff5f57;
+        }
 
         .music-player-content {
             display: flex;
@@ -507,9 +524,9 @@
             background: #F5F3F0;
             border-radius: 33px;
             border: 10px solid #2C1810;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 
-                        0 0 30px rgba(44, 24, 16, 0.2),
-                        inset 0 2px 0 rgba(255, 255, 255, 0.3);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4),
+                0 0 30px rgba(44, 24, 16, 0.2),
+                inset 0 2px 0 rgba(255, 255, 255, 0.3);
             z-index: 1000;
             cursor: move;
             user-select: none;
@@ -519,9 +536,9 @@
 
         .floating-chat.dragging {
             transform: scale(1.05);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 
-                        0 0 40px rgba(255, 182, 193, 0.8),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(255, 182, 193, 0.8),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
             cursor: grabbing;
         }
 
@@ -615,12 +632,12 @@
         .chat-title-area {
             position: relative;
             padding: 16px 20px;
-            background: linear-gradient(135deg, 
-                #FF6B9D 0%, 
-                #C44569 25%, 
-                #7B68EE 50%, 
-                #9B59B6 75%, 
-                #E056FD 100%);
+            background: linear-gradient(135deg,
+                    #FF6B9D 0%,
+                    #C44569 25%,
+                    #7B68EE 50%,
+                    #9B59B6 75%,
+                    #E056FD 100%);
             border-bottom: none;
             overflow: hidden;
             width: 100%;
@@ -638,7 +655,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: 
+            background:
                 radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.2) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 40% 40%, rgba(255, 182, 193, 0.1) 0%, transparent 50%);
@@ -657,8 +674,17 @@
         }
 
         @keyframes sparkle {
-            0%, 100% { opacity: 0.7; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.1); }
+
+            0%,
+            100% {
+                opacity: 0.7;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
         }
 
         .chat-user-info {
@@ -681,7 +707,7 @@
             justify-content: center;
             font-size: 24px;
             position: relative;
-            box-shadow: 
+            box-shadow:
                 0 4px 15px rgba(255, 182, 193, 0.4),
                 0 2px 8px rgba(0, 0, 0, 0.1),
                 inset 0 2px 0 rgba(255, 255, 255, 0.6);
@@ -790,8 +816,15 @@
         }
 
         @keyframes avatarFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-2px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-2px);
+            }
         }
 
         /* Avatar glow effect */
@@ -803,16 +836,21 @@
             right: -3px;
             bottom: -3px;
             border-radius: 50%;
-            background: linear-gradient(45deg, 
-                transparent, 
-                rgba(255, 255, 255, 0.3), 
-                transparent);
+            background: linear-gradient(45deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.3),
+                    transparent);
             animation: haloRotate 6s linear infinite;
         }
 
         @keyframes haloRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .chat-user-details {
@@ -826,7 +864,7 @@
             font-size: 18px;
             font-weight: 700;
             margin: 0;
-            text-shadow: 
+            text-shadow:
                 0 2px 4px rgba(0, 0, 0, 0.3),
                 0 1px 0 rgba(255, 255, 255, 0.2);
             position: relative;
@@ -841,8 +879,15 @@
         }
 
         @keyframes heartBeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
         }
 
         .chat-user-status {
@@ -864,15 +909,22 @@
             height: 8px;
             border-radius: 50%;
             background: #4AE54A;
-            box-shadow: 
+            box-shadow:
                 0 0 0 2px rgba(74, 229, 74, 0.3),
                 0 0 8px rgba(74, 229, 74, 0.6);
             animation: onlinePulse 2s ease-in-out infinite;
         }
 
         @keyframes onlinePulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
         }
 
         /* Cute action buttons */
@@ -891,9 +943,9 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.25) 0%, 
-                rgba(255, 255, 255, 0.1) 100%);
+            background: linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.25) 0%,
+                    rgba(255, 255, 255, 0.1) 100%);
             border: 2px solid rgba(255, 255, 255, 0.3);
             color: white;
             cursor: pointer;
@@ -915,19 +967,19 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(255, 255, 255, 0.4), 
-                transparent);
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.4),
+                    transparent);
             transition: left 0.6s;
         }
 
         .chat-action-btn:hover {
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.35) 0%, 
-                rgba(255, 255, 255, 0.2) 100%);
+            background: linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.35) 0%,
+                    rgba(255, 255, 255, 0.2) 100%);
             transform: translateY(-2px) scale(1.05);
-            box-shadow: 
+            box-shadow:
                 0 8px 25px rgba(255, 182, 193, 0.4),
                 0 4px 12px rgba(0, 0, 0, 0.2);
         }
@@ -944,9 +996,11 @@
         .chat-action-btn:nth-child(1) {
             animation-delay: 0.1s;
         }
+
         .chat-action-btn:nth-child(2) {
             animation-delay: 0.2s;
         }
+
         .chat-action-btn:nth-child(3) {
             animation-delay: 0.3s;
         }
@@ -981,17 +1035,17 @@
             animation: messageSlideIn 0.4s ease-out;
             display: flex;
         }
-        
+
         .message.user-message {
             justify-content: flex-end;
         }
-        
+
         .message.ai-message {
             justify-content: flex-start;
             position: relative;
             padding-left: 54px;
         }
-        
+
         /* Character avatars for ElizaOS messages */
         .message.ai-message::before {
             content: '';
@@ -1006,112 +1060,112 @@
             border: 2px solid #FFD700;
             box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
         }
-        
+
         .character-fliza .message.ai-message::before {
             background-image: url('profile-pic/fliza-pf.png');
         }
-        
+
         .character-alice .message.ai-message::before {
             background-image: url('profile-pic/alice-pf.png');
         }
-        
+
         .character-ash .message.ai-message::before {
             background-image: url('profile-pic/ash-pf.png');
         }
-        
+
         .character-bobo .message.ai-message::before {
             background-image: url('profile-pic/bobo-pf.png');
         }
-        
+
         .character-elinyaa .message.ai-message::before {
             background-image: url('profile-pic/elinyaa-pf.png');
         }
-        
+
         .character-imeris .message.ai-message::before {
             background-image: url('profile-pic/imeris-pf.png');
         }
-        
+
         .character-kyoko .message.ai-message::before {
             background-image: url('profile-pic/kyoko-pf.png');
         }
-        
+
         .character-lena .message.ai-message::before {
             background-image: url('profile-pic/lena-pf.png');
         }
-        
+
         .character-lilium .message.ai-message::before {
             background-image: url('profile-pic/lilium.png');
         }
-        
+
         .character-maple .message.ai-message::before {
             background-image: url('profile-pic/maple-pf.png');
         }
-        
+
         .character-miru .message.ai-message::before {
             background-image: url('profile-pic/Miru-pf.png');
         }
-        
+
         .character-miumiu .message.ai-message::before {
             background-image: url('profile-pic/miumiu-pf.png');
         }
-        
+
         .character-neco .message.ai-message::before {
             background-image: url('profile-pic/neco-pf.png');
         }
-        
+
         .character-nekona .message.ai-message::before {
             background-image: url('profile-pic/nekona.png');
         }
-        
+
         .character-notia .message.ai-message::before {
             background-image: url('profile-pic/notia-pf.png');
         }
-        
+
         .character-ququ .message.ai-message::before {
             background-image: url('profile-pic/ququ-pf.png');
         }
-        
+
         .character-rainy .message.ai-message::before {
             background-image: url('profile-pic/rainy-pf.png');
         }
-        
+
         .character-rindo .message.ai-message::before {
             background-image: url('profile-pic/rindo-pf.png');
         }
-        
+
         .character-sikirei .message.ai-message::before {
             background-image: url('profile-pic/sikirei-pf.png');
         }
-        
+
         .character-vivi .message.ai-message::before {
             background-image: url('profile-pic/vivi-pf.png');
         }
-        
+
         .character-wolf .message.ai-message::before {
             background-image: url('profile-pic/wolf.png');
         }
-        
+
         .character-wolferia .message.ai-message::before {
             background-image: url('profile-pic/wolferia-pf.png');
         }
-        
+
         .character-yawl .message.ai-message::before {
             background-image: url('profile-pic/yawl-pf.png');
         }
-        
+
         .character-yuu .message.ai-message::before {
             background-image: url('profile-pic/yuu yii-pf.png');
         }
-        
+
         .character-zwei .message.ai-message::before {
             background-image: url('profile-pic/zwei-pf.png');
         }
-        
+
         .message-content {
             max-width: 80%;
             position: relative;
         }
-        
+
         .message.ai-message .message-text {
             background: linear-gradient(135deg, #FFB084 0%, #FF9D6B 50%, #FF8A50 100%) !important;
             border-radius: 20px 20px 20px 5px !important;
@@ -1124,12 +1178,12 @@
             word-wrap: break-word !important;
             margin: 0 !important;
             box-shadow: 0 4px 12px rgba(255, 157, 107, 0.3),
-                        0 2px 6px rgba(139, 69, 19, 0.2) !important;
+                0 2px 6px rgba(139, 69, 19, 0.2) !important;
             border: none !important;
             text-shadow: 0 1px 2px rgba(139, 69, 19, 0.3) !important;
             display: block !important;
         }
-        
+
         .message.ai-message .message-text::after {
             content: '';
             position: absolute;
@@ -1141,7 +1195,7 @@
             border-width: 0 12px 12px 0;
             border-color: transparent #FF8A50 transparent transparent;
         }
-        
+
         .message.ai-message .message-time {
             background: none !important;
             border-radius: none !important;
@@ -1152,7 +1206,7 @@
             display: block !important;
             margin-bottom: 0 !important;
         }
-        
+
         .message.user-message .message-text {
             background: linear-gradient(135deg, #F0F0F0 0%, #E0E0E0 50%, #D0D0D0 100%) !important;
             color: #333 !important;
@@ -1160,9 +1214,9 @@
             padding: 16px 20px !important;
             font-size: 18px !important;
             box-shadow: 0 4px 12px rgba(224, 224, 224, 0.4),
-                        0 2px 6px rgba(0, 0, 0, 0.1) !important;
+                0 2px 6px rgba(0, 0, 0, 0.1) !important;
         }
-        
+
         .message.user-message .message-time {
             background: transparent !important;
             color: #333 !important;
@@ -1202,12 +1256,12 @@
             word-wrap: break-word !important;
             margin: 8px 0 !important;
             box-shadow: 0 4px 12px rgba(255, 157, 107, 0.3),
-                        0 2px 6px rgba(139, 69, 19, 0.2) !important;
+                0 2px 6px rgba(139, 69, 19, 0.2) !important;
             border: none !important;
             text-shadow: 0 1px 2px rgba(139, 69, 19, 0.3) !important;
             display: block !important;
         }
-        
+
         .chat-window-messages .bubble-content,
         .bubble-content {
             background: linear-gradient(135deg, #FFB084 0%, #FF9D6B 50%, #FF8A50 100%) !important;
@@ -1221,11 +1275,11 @@
             word-wrap: break-word !important;
             margin: 8px 0 !important;
             box-shadow: 0 4px 12px rgba(255, 157, 107, 0.3),
-                        0 2px 6px rgba(139, 69, 19, 0.2) !important;
+                0 2px 6px rgba(139, 69, 19, 0.2) !important;
             border: none !important;
             text-shadow: 0 1px 2px rgba(139, 69, 19, 0.3) !important;
         }
-        
+
         .message-bubble.ai .bubble-content::after {
             content: '';
             position: absolute;
@@ -1249,9 +1303,9 @@
             color: #333;
             border-radius: 20px 20px 5px 20px;
             box-shadow: 0 4px 12px rgba(224, 224, 224, 0.4),
-                        0 2px 6px rgba(0, 0, 0, 0.1);
+                0 2px 6px rgba(0, 0, 0, 0.1);
         }
-        
+
         .message-bubble.user .bubble-content::after {
             content: '';
             position: absolute;
@@ -1306,7 +1360,7 @@
         .input-container:focus-within {
             border-color: rgba(255, 182, 193, 0.5);
             box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.1),
-                        0 4px 12px rgba(0, 0, 0, 0.08);
+                0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
         .chat-input-field {
@@ -1325,7 +1379,7 @@
             color: rgba(0, 0, 0, 0.35);
             font-size: 15px;
         }
-        
+
         .chat-input-field:focus {
             background: transparent;
         }
@@ -1370,7 +1424,7 @@
         .send-btn:hover::before {
             transform: translate(-50%, -50%) scale(1.2);
         }
-        
+
         .send-btn:active {
             transform: translateY(0) scale(0.96);
         }
@@ -1384,9 +1438,11 @@
             0% {
                 transform: translateY(-1px) scale(1);
             }
+
             50% {
                 transform: translateY(-3px) scale(1.1) rotate(10deg);
             }
+
             100% {
                 transform: translateY(-1px) scale(1) rotate(0deg);
             }
@@ -1400,9 +1456,11 @@
             0% {
                 transform: translateX(0) rotate(0deg);
             }
+
             50% {
                 transform: translateX(2px) rotate(15deg);
             }
+
             100% {
                 transform: translateX(0) rotate(0deg);
             }
@@ -1442,6 +1500,7 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -1457,7 +1516,7 @@
                 scale: 0.5;
                 top: -152px;
             }
-            
+
             .chat-window-messages {
                 height: 495px;
             }
@@ -1475,17 +1534,23 @@
                 transform: none;
             }
 
-            .chat-window-header { cursor: default; }
-
-            .chat-window-messages {
-                height: calc(100dvh - 140px); /* header + input approx */
+            .chat-window-header {
+                cursor: default;
             }
 
-            .music-controls { display: none; }
+            .chat-window-messages {
+                height: calc(100dvh - 140px);
+                /* header + input approx */
+            }
+
+            .music-controls {
+                display: none;
+            }
         }
 
         /* Mobile Portrait Layout - UI Optimization */
         @media (max-width: 768px) and (orientation: portrait) {
+
             /* Floating Chat - Transparent glass effect for portrait */
             .floating-chat {
                 background: rgba(255, 255, 255, 0.1) !important;
@@ -1563,19 +1628,24 @@
 
         /* Mobile Landscape Layout - Additional Elements */
         @media (orientation: landscape) and (max-width: 1200px) and (max-height: 500px) {
+
             /* Music Controls - Proper landscape scaling without breaking layout */
             .music-controls {
-                width: 280px !important; /* Keep original width */
-                height: 120px !important; /* Keep original height */
+                width: 280px !important;
+                /* Keep original width */
+                height: 120px !important;
+                /* Keep original height */
                 top: 15px !important;
                 left: 15px !important;
-                padding: 15px !important; /* Keep original padding */
-                transform: scale(0.75) !important; /* Only scale the entire container */
+                padding: 15px !important;
+                /* Keep original padding */
+                transform: scale(0.75) !important;
+                /* Only scale the entire container */
                 transform-origin: top left !important;
             }
-            
+
             /* Don't override internal elements - let them scale naturally with container */
-            
+
             /* Language Toggle - Compact for landscape */
             .language-toggle {
                 bottom: 15px !important;
@@ -1585,12 +1655,12 @@
                 transform: scale(0.7) !important;
                 transform-origin: bottom left !important;
             }
-            
+
             .language-btn {
                 padding: 3px 6px !important;
                 font-size: 9px !important;
             }
-            
+
             /* Wallet Status Info - Hide or minimize in landscape */
             .wallet-status-info {
                 display: none !important;
@@ -1687,7 +1757,8 @@
             color: #2d3436;
         }
 
-        #character-selector, #animation-selector {
+        #character-selector,
+        #animation-selector {
             width: 100%;
             padding: 8px;
             border-radius: 5px;
@@ -1800,10 +1871,12 @@
                 opacity: 0;
                 transform: scale(0.3) translateY(-50px);
             }
+
             50% {
                 opacity: 1;
                 transform: scale(1.1) translateY(0);
             }
+
             100% {
                 opacity: 1;
                 transform: scale(1) translateY(0);
@@ -1827,7 +1900,7 @@
                 MOBILE NOTICE
             </div>
             <div class="mobile-notice-content">
-                The mobile experience is currently being optimized and requires a DApp browser for full functionality. 
+                The mobile experience is currently being optimized and requires a DApp browser for full functionality.
                 <br><br>
                 <strong>We recommend using desktop for the best experience.</strong>
             </div>
@@ -1837,18 +1910,18 @@
 
     <!-- Include chat system - AI integration handled by ElizaOS -->
     <script type="module" src="chat-system-eliza.js"></script>
-    
+
     <!-- Mobile Notice Modal JavaScript -->
     <script>
         // Mobile Notice Modal Functions
-        window.showMobileNotice = function() {
+        window.showMobileNotice = function () {
             const overlay = document.getElementById('mobile-notice-overlay');
             if (overlay && window.innerWidth <= 768) {
                 overlay.classList.add('show');
             }
         }
 
-        window.closeMobileNotice = function() {
+        window.closeMobileNotice = function () {
             const overlay = document.getElementById('mobile-notice-overlay');
             if (overlay) {
                 overlay.classList.remove('show');
@@ -1878,8 +1951,14 @@
     <div class="game-container">
         <!-- Left VRM display area -->
         <div class="vrm-container">
+            <!-- Background Video -->
+            <video autoplay loop muted playsinline id="bg-video"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
+                <source src="public/BG/Circle-Cross-Triangle_Yellow-1.mp4" type="video/mp4">
+            </video>
+
             <canvas id="vrm-canvas" class="vrm-canvas"></canvas>
-            
+
             <!-- AI speech bubble -->
             <div class="ai-speech-bubble" id="ai-speech-bubble" style="display: none;"></div>
 
@@ -1922,21 +2001,22 @@
                 <button class="language-btn" id="lang-en" onclick="switchLanguage('en')">EN</button>
                 <button class="language-btn" id="lang-zh" onclick="switchLanguage('zh')">ZH</button>
             </div>
-            
+
 
             <!-- Background music element -->
             <audio id="background-music" loop preload="auto" controls style="display: none;">
                 <source src="BG/bgm-compressed.mp3" type="audio/mpeg">
                 Your browser does not support audio playback.
             </audio>
-            
+
             <!-- Wallet status (visible when logged in) -->
             <div class="wallet-status-info" id="wallet-status-info" style="display: none;">
                 <div class="wallet-avatar">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 21 21">
                         <g fill="none" fill-rule="evenodd" transform="translate(3 4)">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M.5 2.5h12a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2zm1-2h9a1 1 0 0 1 1 1v1H.5v-1a1 1 0 0 1 1-1z"/>
-                            <circle cx="11.5" cy="7.5" r="1" fill="currentColor"/>
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                d="M.5 2.5h12a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2zm1-2h9a1 1 0 0 1 1 1v1H.5v-1a1 1 0 0 1 1-1z" />
+                            <circle cx="11.5" cy="7.5" r="1" fill="currentColor" />
                         </g>
                     </svg>
                 </div>
@@ -1958,120 +2038,48 @@
 
 
         <!-- Floating chat window -->
-        <div class="floating-chat" id="floating-chat">
-            <!-- Mobile top bar styled chat header -->
-            <div class="chat-window-header">
-                <!-- Real phone status bar -->
-                <div class="phone-status-bar">
-                    <div class="status-left">
-                        <div class="carrier-info">
-                            <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor">
-                                <rect x="0" y="8" width="2" height="4" rx="0.5"/>
-                                <rect x="4" y="6" width="2" height="6" rx="0.5"/>
-                                <rect x="8" y="4" width="2" height="8" rx="0.5"/>
-                                <rect x="12" y="2" width="2" height="10" rx="0.5"/>
-                            </svg>
-                            <span>docomo</span>
-                        </div>
-                        <span class="network-type">4G</span>
-                    </div>
-                    <div class="status-center">
-                        <div class="time-display" id="phone-time">1:26</div>
-                    </div>
-                    <div class="status-right">
-                        <span class="status-icon">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z"/>
-                            </svg>
-                        </span>
-                        <span class="status-icon">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M17.81,4.47C17.73,4.47 17.65,4.45 17.58,4.41C15.66,3.42 14,3.42 12.34,4.41C12.26,4.45 12.18,4.47 12.1,4.47C12,4.47 11.93,4.45 11.85,4.41C9.93,3.42 8.27,3.42 6.61,4.41C6.54,4.45 6.46,4.47 6.38,4.47C6.28,4.47 6.21,4.45 6.13,4.41L5.5,4.1C5.32,4 5.1,4.08 5,4.26C4.92,4.44 5,4.66 5.18,4.76L5.81,5.07C5.89,5.11 5.97,5.13 6.05,5.13C6.15,5.13 6.22,5.11 6.3,5.07C7.92,4.08 9.58,4.08 11.2,5.07C11.28,5.11 11.36,5.13 11.44,5.13C11.54,5.13 11.61,5.11 11.69,5.07C13.31,4.08 14.97,4.08 16.59,5.07C16.67,5.11 16.75,5.13 16.83,5.13C16.93,5.13 17,5.11 17.08,5.07L17.71,4.76C17.89,4.66 17.97,4.44 17.89,4.26C17.81,4.08 17.59,4 17.41,4.1L17.81,4.47Z"/>
-                            </svg>
-                        </span>
-                        <span class="status-icon">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M14,20A2,2 0 0,1 12,22A2,2 0 0,1 10,20H14M12,2A7,7 0 0,1 19,9C19,11.38 17.81,13.47 16,14.74V17A1,1 0 0,1 15,18H9A1,1 0 0,1 8,17V14.74C6.19,13.47 5,11.38 5,9A7,7 0 0,1 12,2M9,21H15A1,1 0 0,1 15,22H9A1,1 0 0,1 9,21Z"/>
-                            </svg>
-                        </span>
-                        <span class="battery-percentage">79%</span>
-                        <span class="status-icon">
-                            <svg width="22" height="12" viewBox="0 0 24 12" fill="none">
-                                <rect x="1" y="2" width="20" height="8" rx="2" stroke="currentColor" stroke-width="1"/>
-                                <rect x="2.5" y="3.5" width="16" height="5" rx="1" fill="currentColor"/>
-                                <rect x="22" y="5" width="2" height="2" rx="0.5" fill="currentColor"/>
-                            </svg>
-                        </span>
-                    </div>
-                </div>
-                
-                <!-- Anime-style chat title area -->
-                <div class="chat-title-area">
-                    <div class="chat-user-info">
-                        <div class="chat-user-avatar"></div>
-                        <div class="chat-user-details">
-                            <h3 class="chat-user-name" id="character-name">Alice</h3>
-                            <p class="chat-user-status" data-i18n="status.online">Online</p>
-                        </div>
-                    </div>
-                    <div class="chat-actions">
-                        <button class="chat-action-btn" title="发送照片">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19M21,19H5V5H19V19Z"/>
-                                <circle cx="9" cy="9" r="2"/>
-                                <path d="M21,15L18,12L15,15L13,13L5,21H19A2,2 0 0,0 21,19V15Z"/>
-                            </svg>
-                        </button>
-                        <button class="chat-action-btn" title="发送表情">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12,2C13.1,2 14,2.9 14,4C14,5.1 13.1,6 12,6C10.9,6 10,5.1 10,4C10,2.9 10.9,2 12,2M21,9V7L15,1H5C3.89,1 3,1.89 3,3V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V9M19,19H5V19L5,3H13V9H19V19Z"/>
-                                <circle cx="12" cy="12" r="1.5"/>
-                                <circle cx="8" cy="10" r="1"/>
-                                <circle cx="16" cy="10" r="1"/>
-                                <path d="M8.5,14.5C9.5,16.5 14.5,16.5 15.5,14.5"/>
-                            </svg>
-                        </button>
-                        <button class="chat-action-btn" title="心情设定">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5 2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/>
-                                <circle cx="12" cy="8.5" r="1.5" fill="white"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
+        <!-- Notebook Chat Interface -->
+        <div class="notebook-wrapper" id="floating-chat">
+            <!-- Simulated Spiral Binding -->
+            <div class="spiral-binding">
+                <!-- CSS will generate the rings -->
             </div>
 
-            <!-- Chat message area -->
-            <div class="chat-window-messages" id="chat-window-messages">
-                <!-- Messages will be dynamically added here -->
-                <div style="display: none;">
-                    <span id="character-name">芙莉莎</span>
+            <!-- The Paper Page -->
+            <div class="notebook-page">
+                <!-- Header: Date & Title -->
+                <div class="page-header">
+                    <div class="header-date" id="diary-date">Oct 24, 2024</div>
+                    <div class="header-title">
+                        <span id="character-name">Alice</span>'s Diary
+                    </div>
                 </div>
-            </div>
 
-            <!-- Chat input area -->
-            <div class="chat-window-input">
-                <div class="input-container">
-                    <input type="text" class="chat-input-field" id="chat-input-field" data-i18n-placeholder="chat.input.placeholder" placeholder="Type your message here..." onkeypress="handleChatKeyPress(event)">
-                    <button class="send-btn" onclick="sendChatMessage()">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z" fill="currentColor"/>
-                        </svg>
-                    </button>
+                <!-- Main Content Area (Lines) -->
+                <div class="page-content" id="chat-window-messages">
+                    <!-- Messages go here -->
+                </div>
+
+                <!-- Footer: Input -->
+                <div class="page-footer">
+                    <div class="input-wrapper">
+                        <input type="text" id="chat-input-field" class="handwritten-input" placeholder="Write a note..."
+                            onkeypress="handleChatKeyPress(event)">
+                        <button class="doodle-send-btn" onclick="sendChatMessage()">
+                            <!-- Simple Arrow Doodle -->
+                            <svg viewBox="0 0 24 24" fill="none" class="doodle-arrow">
+                                <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Unauthorized access notification -->
-        <div class="unauthorized-overlay" id="unauthorized-overlay" style="display: none;">
-            <div class="unauthorized-content">
-                <h2 data-i18n="wallet.verification.title">🔒 Wallet Verification Required</h2>
-                <p data-i18n="wallet.verification.message">Please connect your Solana wallet first to access the AI girlfriend chat room. Each wallet address will get a unique personalized experience!</p>
-                <button class="connect-wallet-btn" onclick="redirectToCharacterSelect()" data-i18n="wallet.verification.button">
-                    Back to Connect Wallet
-                </button>
-            </div>
-        </div>
+
 
     </div>
 
@@ -2497,7 +2505,7 @@
         const renderer = new THREE.WebGLRenderer({
             canvas: canvas,
             antialias: true,
-            alpha: false  // Changed to false to ensure background is opaque
+            alpha: true  // Set to true for transparent background to show video
         });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.shadowMap.enabled = true;
@@ -2517,46 +2525,8 @@
 
         const scene = new THREE.Scene();
 
-        // Set temporary background color first
-        scene.background = new THREE.Color(0x87CEEB);
-        
-        // Load background image
-        AppConfig.debug.log('🎨 Loading background image: BG/chatroom2.png');
-        AppConfig.debug.log('🌍 Current URL:', window.location.href);
-        
-        const textureLoader = new THREE.TextureLoader();
-        textureLoader.load(
-            './BG/chatroom2.png',
-            (texture) => {
-                AppConfig.debug.log('🎨 Background texture loaded:', texture);
-                AppConfig.debug.log('📐 Texture dimensions:', texture.image.width, 'x', texture.image.height);
-                
-                // Adjust texture settings for full screen
-                texture.minFilter = THREE.LinearFilter;
-                texture.magFilter = THREE.LinearFilter;
-                texture.wrapS = THREE.ClampToEdgeWrapping;
-                texture.wrapT = THREE.ClampToEdgeWrapping;
-                texture.flipY = false; // Prevent image from being flipped
-                
-                scene.background = texture;
-                AppConfig.debug.log('✅ Background image set successfully!');
-                
-                // Force render once
-                if (renderer && scene && camera) {
-                    renderer.render(scene, camera);
-                }
-            },
-            (progress) => {
-                const percent = progress.total ? (progress.loaded / progress.total * 100).toFixed(1) : '?';
-                AppConfig.debug.log('📊 Background loading progress:', percent + '%');
-            },
-            (error) => {
-                console.error('⚠️ Background image load failed:', error);
-                console.error('⚠️ Detail:', error.message);
-                console.error('⚠️ Full path:', new URL('BG/chatroom2.png', window.location.href).href);
-                // Keep temporary background color
-            }
-        );
+        // Background handled by video element, so scene background is transparent
+        scene.background = null;
 
         // Lighting - optimized brightness based on official examples
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
@@ -2592,30 +2562,30 @@
             shadowCanvas.width = 128;
             shadowCanvas.height = 128;
             const context = shadowCanvas.getContext('2d');
-            
+
             // Create radial gradient shadow
             const gradient = context.createRadialGradient(64, 64, 0, 64, 64, 64);
             gradient.addColorStop(0, 'rgba(0, 0, 0, 0.4)'); // Darker at center
             gradient.addColorStop(0.5, 'rgba(0, 0, 0, 0.2)'); // Medium transparency
             gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); // Transparent at edges
-            
+
             context.fillStyle = gradient;
             context.fillRect(0, 0, 128, 128);
-            
+
             const shadowTexture = new THREE.CanvasTexture(shadowCanvas);
             const shadowGeometry = new THREE.PlaneGeometry(2.2, 2.2);
-            const shadowMaterial = new THREE.MeshBasicMaterial({ 
+            const shadowMaterial = new THREE.MeshBasicMaterial({
                 map: shadowTexture,
                 transparent: true,
                 alphaTest: 0.001,
                 depthWrite: false
             });
-            
+
             footShadow = new THREE.Mesh(shadowGeometry, shadowMaterial);
             footShadow.rotation.x = -Math.PI / 2;
             footShadow.position.set(0, -0.82, 0); // Directly at foot bottom, consistent with index.html
             scene.add(footShadow);
-            
+
             AppConfig.debug.log('✅ Created foot shadow', {
                 position: footShadow.position,
                 size: '2.2x2.2'
@@ -2625,7 +2595,7 @@
         // Update阴影位置函数（用于动画时）
         function updateFootShadow() {
             if (!footShadow || !currentVrm) return;
-            
+
             // Keep shadow position fixed at foot bottom
             footShadow.position.x = currentVrm.scene.position.x || 0;
             footShadow.position.y = -0.82; // Fixed height, consistent with index.html
@@ -2708,7 +2678,7 @@
         function testShyExpression() {
             (window.AppConfig?.debug?.log || console.log)('Test bashful expression...');
             (window.AppConfig?.debug?.log || console.log)('Available expressions:', availableExpressions);
-            
+
             if (!currentVrm || !currentVrm.expressionManager) {
                 alert('VRM model is not loaded yet!');
                 return;
@@ -2716,19 +2686,19 @@
 
             // Reset所有表情
             resetExpressions();
-            
+
             // Try various shy-related expressions
             const shyExpressions = ['shy', 'embarrassed', 'blush', 'surprised', 'sad'];
             let appliedExpression = null;
-            
+
             shyExpressions.forEach(expr => {
                 if (availableExpressions.includes(expr)) {
                     setExpression(expr, 1.0);
                     appliedExpression = expr;
-                (window.AppConfig?.debug?.log || console.log)(`Applied expression: ${expr}`);
+                    (window.AppConfig?.debug?.log || console.log)(`Applied expression: ${expr}`);
                 }
             });
-            
+
             if (appliedExpression) {
                 document.getElementById('current-expression').textContent = `Bashful (${appliedExpression})`;
                 // 5秒后恢复
@@ -2742,14 +2712,14 @@
 
         function testHappyExpression() {
             (window.AppConfig?.debug?.log || console.log)('Test happy expression...');
-            
+
             if (!currentVrm || !currentVrm.expressionManager) {
                 alert('VRM model is not loaded yet!');
                 return;
             }
 
             resetExpressions();
-            
+
             if (availableExpressions.includes('happy')) {
                 setExpression('happy', 1.0);
                 document.getElementById('current-expression').textContent = 'Happy';
@@ -2761,14 +2731,14 @@
 
         function testSadExpression() {
             (window.AppConfig?.debug?.log || console.log)('Test sad expression...');
-            
+
             if (!currentVrm || !currentVrm.expressionManager) {
                 alert('VRM model is not loaded yet!');
                 return;
             }
 
             resetExpressions();
-            
+
             if (availableExpressions.includes('sad')) {
                 setExpression('sad', 1.0);
                 document.getElementById('current-expression').textContent = 'Sad';
@@ -2816,7 +2786,7 @@
         let idleAnimationUrl = 'mixamo animation/Breathing Idle.fbx';
         let idleAction = null;
         let returnToIdleTimer = null;
-        
+
         async function loadAnimation(animationUrl, emotionName = null) {
             if (!currentVrm) return;
 
@@ -2826,12 +2796,12 @@
                     clearTimeout(returnToIdleTimer);
                     returnToIdleTimer = null;
                 }
-                
+
                 currentAnimationUrl = animationUrl;
 
                 // Determine if it is idle animation
                 const isIdleAnimation = animationUrl === idleAnimationUrl || animationUrl.includes('Breathing Idle');
-                
+
                 // Determine if it is ActorCore or Mixamo animation
                 const isActorCore = animationUrl.includes('actorcore animation');
                 const clip = isActorCore ?
@@ -2842,7 +2812,7 @@
                     const newAction = currentMixer.clipAction(clip);
                     newAction.reset().play();
                     newAction.timeScale = 1.0;
-                    
+
                     // If idle animation, set to loop
                     if (isIdleAnimation) {
                         newAction.loop = THREE.LoopRepeat;
@@ -2858,7 +2828,7 @@
                     }
 
                     currentAction = newAction;
-                    
+
                     // If not idle animation, set timer to return to idle
                     if (!isIdleAnimation) {
                         // Get animation duration, return to idle after animation ends
@@ -2928,7 +2898,7 @@
         // VRM load函数
         function loadVRM(characterName = null) {
             let vrmPath;
-            
+
             if (characterName) {
                 vrmPath = vrmCharacters[characterName];
                 if (!vrmPath) {
@@ -2946,7 +2916,7 @@
                         'Yawl': 'Yawl_Dress',
                         'Vivi': 'Vivi_model'
                     };
-                    
+
                     const vrmKey = nameToVrmKey[characterName];
                     if (vrmKey && vrmCharacters[vrmKey]) {
                         vrmPath = vrmCharacters[vrmKey];
@@ -2967,7 +2937,7 @@
                     if (character.file) {
                         vrmPath = character.file;
                         characterName = character.name || 'Fliza';
-                        
+
                         // Find the VRM key that matches this file path
                         const vrmKey = Object.keys(vrmCharacters).find(key => vrmCharacters[key] === character.file);
                         if (vrmKey) {
@@ -3019,7 +2989,7 @@
                         scene.remove(currentVrm.scene);
                         VRMUtils.deepDispose(currentVrm.scene);
                     }
-                    
+
                     // Clean up previous shadows
                     if (footShadow) {
                         scene.remove(footShadow);
@@ -3036,7 +3006,7 @@
 
                     // Move VRM model position down, closer to bottom boundary
                     vrm.scene.position.y = -0.8;  // Same position as character selection page
-                    
+
                     // Create脚底阴影
                     createFootShadow(vrm);
 
@@ -3054,13 +3024,13 @@
                     }
 
                     availableExpressions = getAvailableExpressions(vrm);
-                    
+
                     // Update全局变量
                     window.currentVrm = currentVrm;
                     window.availableExpressions = availableExpressions;
 
                     updateVRMStatus('✅ Loaded');
-                    
+
                     // Updatecharacter名称显示
                     const characterNameElement = document.getElementById('character-name');
                     if (characterNameElement) {
@@ -3071,7 +3041,7 @@
                     loadAnimation(idleAnimationUrl);
 
                     // console.log('🎭 VRM loaded:', vrm);
-                    
+
                     // InitializeAIchat system
                     onVRMLoadComplete(currentCharacterName, vrmPath);
                 },
@@ -3180,7 +3150,7 @@
         function getCharacterClassName(characterName) {
             const nameMapping = {
                 '芙莉莎': 'character-fliza',
-                'Fliza': 'character-fliza', 
+                'Fliza': 'character-fliza',
                 'Alice': 'character-alice',
                 'Ash': 'character-ash',
                 'Bobo': 'character-bobo',
@@ -3210,7 +3180,7 @@
         }
 
         // Chat UI functions
-        
+
         // Update流式消息内容
         function updateStreamingMessageUI(messageId, content) {
             const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
@@ -3218,7 +3188,7 @@
                 const messageContent = messageElement.querySelector('.message-text');
                 if (messageContent) {
                     messageContent.textContent = content;
-                    
+
                     // Add typing effect cursor
                     if (!content.endsWith('|')) {
                         messageContent.textContent += '|';
@@ -3228,47 +3198,47 @@
                             }
                         }, 500);
                     }
-                    
+
                     // Keep scrolled to bottom
                     const messagesContainer = document.getElementById('chat-window-messages');
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                    
+
                     // Only update dialogue bubble text, don't restart animation
                     updateSpeechBubbleContent(content);
                 }
             }
         }
-        
+
         // Speech bubble state management
         let speechBubbleState = {
             isActive: false,
             currentAnimation: null,
             timeoutId: null
         };
-        
+
         // Show AI dialogue bubble
         function showSpeechBubble(text) {
             // console.log('🗨️ showSpeechBubble called with text:', text);
             const bubble = document.getElementById('ai-speech-bubble');
-            
+
             if (!bubble) {
                 console.error('❌ Speech bubble element not found!');
                 return;
             }
-            
+
             // Clear previous state
             if (speechBubbleState.timeoutId) {
                 clearTimeout(speechBubbleState.timeoutId);
             }
-            
+
             bubble.style.display = 'block';
             bubble.style.animation = 'bubbleFadeIn 0.5s forwards';
             speechBubbleState.isActive = true;
-            
+
             // Typewriter effect - display character by character
             let currentIndex = 0;
             bubble.textContent = '';
-            
+
             function typeText() {
                 if (currentIndex < text.length && speechBubbleState.isActive) {
                     bubble.textContent += text[currentIndex];
@@ -3277,9 +3247,9 @@
                 } else if (speechBubbleState.isActive) {
                     // After text display completes, stay longer
                     const displayTime = Math.max(5000, text.length * 200);
-                    
+
                     // console.log(`💬 Subtitle bubble display time: ${displayTime}ms (text length: ${text.length}characters)`);
-                    
+
                     speechBubbleState.timeoutId = setTimeout(() => {
                         if (speechBubbleState.isActive) {
                             bubble.style.animation = 'bubbleFadeOut 1s forwards';
@@ -3291,18 +3261,18 @@
                     }, displayTime);
                 }
             }
-            
+
             // Start打characters效果
             speechBubbleState.timeoutId = setTimeout(typeText, 200); // Start typing 200ms after bubble appears
         }
-        
+
         // Speech bubble streaming update state
         let bubbleStreamingState = {
             isStreaming: false,
             pendingText: '',
             streamStartTime: null
         };
-        
+
         // Update对话气泡内容（流式更新时使用，不重启动画）
         function updateSpeechBubbleContent(text) {
             // Mark as streaming update state
@@ -3311,19 +3281,19 @@
                 bubbleStreamingState.streamStartTime = Date.now();
                 console.log('🎬 Starting streaming speech bubble update');
             }
-            
+
             // Save latest complete text
             bubbleStreamingState.pendingText = text;
-            
+
             // Setup延迟显示，避免频繁更新
             if (bubbleStreamingState.timeoutId) {
                 clearTimeout(bubbleStreamingState.timeoutId);
             }
-            
+
             bubbleStreamingState.timeoutId = setTimeout(() => {
                 // If still in streaming update, check if should display
                 const timeSinceStart = Date.now() - bubbleStreamingState.streamStartTime;
-                
+
                 // If streaming update has stopped for more than 500ms, consider completed
                 if (timeSinceStart > 500) {
                     console.log('✨ Streaming update completed, showing final speech bubble');
@@ -3349,22 +3319,22 @@
             try {
                 const historyKey = `chat_history_${userId}_${characterId}`;
                 let history = JSON.parse(localStorage.getItem(historyKey) || '[]');
-                
+
                 // Add new conversation
                 history.push({
                     timestamp: new Date().toISOString(),
                     user: userMessage,
                     ai: aiResponse
                 });
-                
+
                 // Only keep recent 50 conversations
                 if (history.length > 50) {
                     history = history.slice(-50);
                 }
-                
+
                 localStorage.setItem(historyKey, JSON.stringify(history));
                 console.log('💾 Chat history saved');
-                
+
             } catch (error) {
                 console.error('Failed to save chat history:', error);
             }
@@ -3486,7 +3456,7 @@
                     console.log('🎵 Auto-play blocked by browser, waiting for user interaction');
                     isMusicPlaying = false;
                     updateMusicButton();
-                    
+
                     // Add user interaction listeners to start music
                     function startMusicOnInteraction() {
                         if (backgroundMusic && !isMusicPlaying) {
@@ -3560,7 +3530,7 @@
         }
 
         // Language switch function - globally accessible
-        window.switchLanguage = function(lang) {
+        window.switchLanguage = function (lang) {
             if (window.i18n) {
                 window.i18n.switchLanguage(lang);
             }
@@ -3572,7 +3542,7 @@
                 const currentLang = window.i18n.getCurrentLanguage();
                 const enBtn = document.getElementById('lang-en');
                 const zhBtn = document.getElementById('lang-zh');
-                
+
                 if (enBtn && zhBtn) {
                     enBtn.classList.toggle('active', currentLang === 'en');
                     zhBtn.classList.toggle('active', currentLang === 'zh');
@@ -3686,7 +3656,7 @@
                 return;
             }
             lastSetAvatar = characterKey;
-            
+
             // Character name to CSS class mapping (supports two formats: id and VRM filename)
             const characterToClass = {
                 // ID-based mapping (from index.html)
@@ -3717,7 +3687,7 @@
                 'bobo': 'character-bobo',
                 // VRM filename-based mapping (for character switching)
                 'Fliza VRM': 'character-fliza',
-                'QuQu_U': 'character-ququ', 
+                'QuQu_U': 'character-ququ',
                 'Ash1.0': 'character-ash',
                 'CH_001_imiut': 'character-imeris',
                 'Elinyaa': 'character-elinyaa',
@@ -3746,9 +3716,9 @@
             const body = document.body;
             const existingClasses = body.className.split(' ').filter(cls => !cls.startsWith('character-'));
             const newClass = characterToClass[characterKey] || characterToClass[characterKey.toLowerCase()] || 'character-alice';
-            
+
             body.className = existingClasses.concat([newClass]).join(' ');
-            
+
             AppConfig.debug.log(`🖼️ Setting character avatar: ${characterKey} -> ${newClass}`);
         }
 
@@ -3830,19 +3800,15 @@
                 this.isAuthenticated = false;
                 this.selectedCharacter = null;
             }
-            
-            // Checkwallet验证状态
+
+            // Check session status (Guest mode)
             checkAuthentication() {
-                AppConfig.debug.log('🔍 Starting wallet verification process...');
-                
-                // 1. 检查localStorage中的wallet地址
-                this.walletAddress = localStorage.getItem('wallet_address');
-                AppConfig.debug.log('💰 localStorage wallet address:', this.walletAddress);
-                
-                // 2. 检查选择的character信息
+                AppConfig.debug.log('🔍 Starting session verification process...');
+
+                // Check selected character info
                 const selectedCharacterData = localStorage.getItem('selectedCharacter');
                 AppConfig.debug.log('👤 localStorage character data:', selectedCharacterData);
-                
+
                 // Detect old format data and clean up
                 if (selectedCharacterData) {
                     try {
@@ -3857,142 +3823,79 @@
                         localStorage.removeItem('selectedCharacter');
                     }
                 }
-                
-                if (!this.walletAddress) {
-                    console.log('❌ Wallet address not found, need to re-login');
-                    console.log('📊 localStorage content check:');
-                    console.log('  - wallet_address:', localStorage.getItem('wallet_address'));
-                    console.log('  - selectedCharacter:', localStorage.getItem('selectedCharacter'));
-                    this.showUnauthorizedOverlay();
-                    return false;
-                }
-                
+
                 if (!selectedCharacterData) {
                     console.log('❌ Character selection info not found, redirecting to character selection page');
                     this.redirectToCharacterSelect();
                     return false;
                 }
-                
+
                 try {
                     this.selectedCharacter = JSON.parse(selectedCharacterData);
                     AppConfig.debug.log('📦 Parsed character data:', this.selectedCharacter);
-                    
-                    // ValidateWallet in character data地址是否匹配
-                    if (this.selectedCharacter.walletAddress !== this.walletAddress) {
-                        console.log('⚠️ Wallet address mismatch:');
-                        console.log('  - Wallet in character data:', this.selectedCharacter.walletAddress);
-                        console.log('  - Wallet in localStorage:', this.walletAddress);
-                        console.log('  - Redirecting to character selection page');
-                        this.redirectToCharacterSelect();
-                        return false;
-                    }
-                    
+
                     this.isAuthenticated = true;
-                    this.updateWalletUI();
-                    AppConfig.debug.log('✅ Wallet verification successful:', this.walletAddress);
+                    this.updateUI();
+                    AppConfig.debug.log('✅ Session verification successful');
                     AppConfig.debug.log('✅ Verified character:', this.selectedCharacter.name);
                     return true;
-                    
+
                 } catch (error) {
                     console.error('❌ Character data parsing failed:', error);
-                    console.error('❌ Raw data:', selectedCharacterData);
                     this.redirectToCharacterSelect();
                     return false;
                 }
             }
-            
-            // Show unauthorized overlay
-            showUnauthorizedOverlay() {
-                const overlay = document.getElementById('unauthorized-overlay');
-                const chatWindow = document.getElementById('floating-chat');
-                const controls = document.querySelector('.control-panel');
-                const musicControls = document.querySelector('.music-controls');
-                
-                // Hide chat related UI
-                if (chatWindow) chatWindow.style.display = 'none';
-                if (controls) controls.style.display = 'none';
-                if (musicControls) musicControls.style.display = 'none';
-                
-                // Show unauthorized prompt
-                overlay.style.display = 'flex';
-            }
-            
-            // UpdatewalletUI显示
-            updateWalletUI() {
+
+            // Update UI display
+            updateUI() {
                 const walletStatusInfo = document.getElementById('wallet-status-info');
-                const walletAddressElement = document.getElementById('wallet-address');
-                
-                if (this.walletAddress) {
-                    walletStatusInfo.style.display = 'flex';
-                    walletAddressElement.textContent = this.formatAddress(this.walletAddress);
-                    
-                    // Updatecharacter名称显示
-                    if (this.selectedCharacter) {
-                        const characterNameElement = document.getElementById('character-name');
-                        if (characterNameElement) {
-                            characterNameElement.textContent = this.selectedCharacter.name;
-                        }
-                        
-                        // Welcome message handled by ElizaOS system
+
+                if (walletStatusInfo) {
+                    // Hide wallet specific UI elements if we want to be clean, or just repurpose them
+                    walletStatusInfo.style.display = 'none';
+                }
+
+                // Update character name display
+                if (this.selectedCharacter) {
+                    const characterNameElement = document.getElementById('character-name');
+                    if (characterNameElement) {
+                        characterNameElement.textContent = this.selectedCharacter.name;
                     }
                 }
             }
-            
-            // Format address display
-            formatAddress(address) {
-                return `${address.slice(0, 4)}...${address.slice(-4)}`;
-            }
-            
-            // Disconnectwallet连接
+
+            // Logout/Disconnect
             disconnect() {
-                (window.AppConfig?.debug?.log || console.log)('walletAuth.disconnect called');
-                (window.AppConfig?.debug?.log || console.log)('localStorage snapshot taken');
-                if (confirm('Disconnect wallet? This will clear local data.')) {
-                    (window.AppConfig?.debug?.log || console.log)('User confirmed disconnect');
-                    // Clear related data
-                    (window.AppConfig?.debug?.log || console.log)('Clearing wallet_address');
-                    localStorage.removeItem('wallet_address');
-                    (window.AppConfig?.debug?.log || console.log)('Clearing wallet_type');
-                    localStorage.removeItem('wallet_type');
-                    (window.AppConfig?.debug?.log || console.log)('Clearing selectedCharacter');
+                if (confirm('Return to character selection?')) {
                     localStorage.removeItem('selectedCharacter');
-                    
-                    // Clear character memory data (optional)
-                    const keys = Object.keys(localStorage);
-                    (window.AppConfig?.debug?.log || console.log)('Check keys to clear memory data:', keys);
-                    keys.forEach(key => {
-                        if (key.startsWith('memory_') || key.startsWith('user_profile_')) {
-                            localStorage.removeItem(key);
-                        }
-                    });
-                    
                     // Redirect to character selection page
                     this.redirectToCharacterSelect();
                 }
             }
-            
+
             // Redirect to character selection page
             redirectToCharacterSelect() {
                 window.location.href = 'index.html';
             }
-            
-            // Get current user ID (wallet address)
+
+            // Get current user ID
             getCurrentUserId() {
-                return this.walletAddress;
+                return localStorage.getItem('userId') || 'guest-user';
             }
-            
+
             // Get current character info
             getCurrentCharacter() {
                 return this.selectedCharacter;
             }
         }
-        
+
         // Global wallet verification instance
         const walletAuth = new WalletAuthenticator();
         window.walletAuth = walletAuth;
-        
+
         // Wallet related global functions
-        window.disconnectWallet = function() {
+        window.disconnectWallet = function () {
             console.log('🔌 disconnectWallet called');
             if (walletAuth) {
                 walletAuth.disconnect();
@@ -4000,13 +3903,13 @@
                 console.error('❌ walletAuth is undefined');
             }
         };
-        
-        window.redirectToCharacterSelect = function() {
+
+        window.redirectToCharacterSelect = function () {
             walletAuth.redirectToCharacterSelect();
         };
-        
+
         // Test function - force logout
-        window.forceDisconnect = function() {
+        window.forceDisconnect = function () {
             console.log('🧪 Force logout test');
             localStorage.clear();
             location.href = 'index.html';
@@ -4029,21 +3932,21 @@
         function initDragAndDrop() {
             const chatHeader = document.querySelector('.chat-window-header');
             const chatWindow = document.getElementById('floating-chat');
-            
+
             // Setup聊天框的初始绝对位置，避免依赖CSS transform
             const windowHeight = window.innerHeight;
             const chatHeight = chatWindow.offsetHeight;
             const initialTop = Math.max(0, (windowHeight - chatHeight) / 2);
-            
+
             chatWindow.style.top = initialTop + 'px';
             chatWindow.style.right = '20px';
             chatWindow.style.left = 'auto';
             chatWindow.style.transform = 'none';
-            
+
             chatHeader.addEventListener('mousedown', dragStart);
             document.addEventListener('mousemove', dragMove);
             document.addEventListener('mouseup', dragEnd);
-            
+
             // Touch event support
             chatHeader.addEventListener('touchstart', dragStart);
             document.addEventListener('touchmove', dragMove);
@@ -4052,12 +3955,12 @@
 
         function dragStart(e) {
             const chatWindow = document.getElementById('floating-chat');
-            
+
             e.preventDefault();
-            
+
             // Get actual position of current window
             const rect = chatWindow.getBoundingClientRect();
-            
+
             if (e.type === 'touchstart') {
                 initialX = e.touches[0].clientX - rect.left;
                 initialY = e.touches[0].clientY - rect.top;
@@ -4072,16 +3975,16 @@
 
         function dragMove(e) {
             if (!isDragging) return;
-            
+
             e.preventDefault();
-            
+
             const chatWindow = document.getElementById('floating-chat');
-            
+
             // Only add dragging style when actually moving
             if (!chatWindow.classList.contains('dragging')) {
                 chatWindow.classList.add('dragging');
             }
-            
+
             if (e.type === 'touchmove') {
                 currentX = e.touches[0].clientX - initialX;
                 currentY = e.touches[0].clientY - initialY;
@@ -4089,22 +3992,22 @@
                 currentX = e.clientX - initialX;
                 currentY = e.clientY - initialY;
             }
-            
+
             // Limit drag range within screen
             const windowWidth = window.innerWidth;
             const windowHeight = window.innerHeight;
             const chatWidth = chatWindow.offsetWidth;
             const chatHeight = chatWindow.offsetHeight;
-            
+
             // Calculate boundary limits
             const minX = 0;
             const maxX = windowWidth - chatWidth;
             const minY = 0;
             const maxY = windowHeight - chatHeight;
-            
+
             currentX = Math.max(minX, Math.min(maxX, currentX));
             currentY = Math.max(minY, Math.min(maxY, currentY));
-            
+
             chatWindow.style.left = currentX + 'px';
             chatWindow.style.top = currentY + 'px';
             chatWindow.style.right = 'auto';
@@ -4113,7 +4016,7 @@
 
         function dragEnd(e) {
             if (!isDragging) return;
-            
+
             const chatWindow = document.getElementById('floating-chat');
             isDragging = false;
             chatWindow.classList.remove('dragging');
@@ -4135,59 +4038,59 @@
         window.updateStreamingMessageUI = updateStreamingMessageUI;
         window.showSpeechBubble = showSpeechBubble;
         window.updateSpeechBubbleContent = updateSpeechBubbleContent;
-        
+
         // Integrate AI chat system
         let selectedCharacter = null;
-        
+
         function initializeAIChat() {
             if (window.elizaChatSystem && selectedCharacter) {
                 window.elizaChatSystem.setCurrentCharacter(selectedCharacter);
                 // console.log('💕 AI chat system connected to character:', selectedCharacter.name);
-                
+
                 // Welcome message is now handled by the backend logic based on conversation history.
                 // The old logic to show a welcome message on the frontend if totalInteractions === 0 is removed.
             }
         }
-        
+
         // getWelcomeMessage function removed after migration. Welcome messages are now handled by the backend.
-        
+
         // The re-definition of sendChatMessage has been removed after migrating to the new ElizaOS chat system.
         // The original sendChatMessage now correctly calls the new system via the updated sendMessage function.
-        
+
         // VRM表情触发函数（供AI系统调用）
-        window.triggerVRMExpression = function(expression) {
+        window.triggerVRMExpression = function (expression) {
             if (currentVrm && currentVrm.expressionManager) {
                 const expressionMap = {
                     'smile': 'happy',
-                    'wink': 'fun', 
+                    'wink': 'fun',
                     'blush': 'happy',
                     'thinking': 'neutral',
                     'shy_smile': 'happy',
                     'nod': 'neutral',
                     'interested': 'surprised'
                 };
-                
+
                 const vrmExpression = expressionMap[expression] || 'neutral';
-                
+
                 // Reset所有表情
                 Object.keys(currentVrm.expressionManager.expressionMap).forEach(name => {
                     currentVrm.expressionManager.setValue(name, 0.0);
                 });
-                
+
                 // Setup目标表情
                 currentVrm.expressionManager.setValue(vrmExpression, 1.0);
-                
+
                 // 2秒后恢复中性表情
                 setTimeout(() => {
                     if (currentVrm && currentVrm.expressionManager) {
                         currentVrm.expressionManager.setValue(vrmExpression, 0.0);
                     }
                 }, 2000);
-                
+
                 // console.log(`😊 Triggering VRM expression: ${expression} -> ${vrmExpression}`);
             }
         };
-        
+
         // Get character personality info
         function getCharacterPersonality(characterName) {
             const personalities = {
@@ -4229,12 +4132,12 @@
         async function generateAIResponseWithMemory(userMessage, contextPrompt) {
             // Here should call your backend API or OpenAI API
             // Now return a simulated response first, replace after you configure API
-            
+
             console.log('🧠 Using memory context to generate reply:', contextPrompt);
-            
+
             // Temporarily use original AI reply system, but add memory info
             const baseResponse = generateAIResponse(userMessage);
-            
+
             // Add some memory-related responses
             const memoryEnhancedResponses = [
                 baseResponse,
@@ -4242,10 +4145,10 @@
                 `${baseResponse} 根据我对你的了解，你应该会喜欢这个建议。`,
                 `${baseResponse} 这让我想起了我们之前的对话。`
             ];
-            
+
             return memoryEnhancedResponses[Math.floor(Math.random() * memoryEnhancedResponses.length)];
         }
-        
+
         // Auto initialize AI chat system after VRM loading completes
         function onVRMLoadComplete(characterName, vrmPath) {
             selectedCharacter = {
@@ -4254,34 +4157,34 @@
                 file: vrmPath,
                 id: characterName
             };
-            
+
             // Setupcharacter头像
             setCharacterAvatar(characterName);
-            
+
             setTimeout(() => {
                 initializeAIChat();
             }, 1500);
         }
-        
+
         // Update手机状态栏时间
         function updatePhoneTime() {
             const timeDisplay = document.getElementById('phone-time');
             if (timeDisplay) {
                 const now = new Date();
-                const timeString = now.toLocaleTimeString('en-US', { 
-                    hour: '2-digit', 
+                const timeString = now.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
                     minute: '2-digit',
-                    hour12: false 
+                    hour12: false
                 });
                 timeDisplay.textContent = timeString;
             }
         }
-        
+
         // Update time every minute
         setInterval(updatePhoneTime, 60000);
         // Update time once immediately
         updatePhoneTime();
-        
+
         window.goToCharacterSelect = goToCharacterSelect;
         window.initDragAndDrop = initDragAndDrop;
 
@@ -4290,31 +4193,31 @@
             AppConfig.debug.info('🚀 AI Companion initialization started...');
             AppConfig.debug.log('🌐 Current page URL:', window.location.href);
             AppConfig.debug.log('📱 Wallet authenticator status:', walletAuth);
-            
+
             // First perform wallet verification
             AppConfig.debug.log('⚡ Starting wallet verification...');
             const isAuthenticated = walletAuth.checkAuthentication();
             AppConfig.debug.log('🔐 Verification result:', isAuthenticated);
-            
+
             if (!isAuthenticated) {
                 console.log('❌ Wallet verification failed, stopping initialization');
                 return; // If verification fails, don't continue initialization
             }
-            
+
             AppConfig.debug.log('✅ Wallet verification successful, continuing app initialization');
-            
+
             // User profile filling moved to character-select page, index.html only handles registered users
-            
+
             // Check是否有选择的character，然后loadVRM
             loadSelectedCharacter();
-            
+
             resizeRenderer();
             animate();
 
             // Initialize选择器
             initAnimationSelector();
             initCharacterSelector();
-            
+
             // Initialize拖拽功能
             initDragAndDrop();
 
@@ -4360,7 +4263,7 @@
             if (aiStatusElement) {
                 aiStatusElement.innerHTML = '<span class="online-indicator"></span>' + i18n.t('status.ai.smart');
             }
-            
+
             AppConfig.debug.info('🎉 AI Companion initialization completed');
         }
 
@@ -4369,31 +4272,31 @@
             try {
                 // Get character info from wallet verification system
                 const character = walletAuth.getCurrentCharacter();
-                
+
                 AppConfig.debug.log('📱 loadSelectedCharacter debug info:');
                 // console.log('- character:', character);
                 // console.log('- localStorage selectedCharacter:', localStorage.getItem('selectedCharacter'));
-                
+
                 if (character) {
                     // Update悬浮聊天框中的character名称
                     const characterNameElement = document.getElementById('character-name');
                     if (characterNameElement) {
                         characterNameElement.textContent = character.name;
                     }
-                    
+
                     // Welcome message handled by ElizaOS system
-                    
+
                     // Setup默认VRM文件
                     defaultVrmFile = character.file;
-                    
+
                     // console.log(`✅ Character loaded: ${character.name} (wallet: ${walletAuth.formatAddress(character.walletAddress)})`);
                     // console.log(`📁 Setting defaultVrmFile: ${defaultVrmFile}`);
-                    
+
                     // Setupcharacter头像（基于character.id）
                     if (character.id) {
                         setCharacterAvatar(character.id);
                     }
-                    
+
                     // Now load VRM file
                     loadVRM();
                 } else {
@@ -4409,7 +4312,7 @@
         // Expose variables to global scope for button calls
         window.currentVrm = currentVrm;
         window.availableExpressions = availableExpressions;
-        
+
         // Expose internal functions to global
         window.resetExpressions = resetExpressions;
         window.setExpression = setExpression;
@@ -4418,7 +4321,7 @@
         AppConfig.debug.log('🔍 Check DOM state:', document.readyState);
         AppConfig.debug.log('🔍 Init function exists:', typeof init);
         AppConfig.debug.log('⚙️ Module script execution completed, preparing initialization...');
-        
+
         if (document.readyState === 'loading') {
             (window.AppConfig?.debug?.log || console.log)('DOM loading, waiting for DOMContentLoaded');
             document.addEventListener('DOMContentLoaded', () => {
@@ -4468,27 +4371,27 @@
 
                 chatHeader.addEventListener('touchmove', (e) => {
                     if (!isDragging || window.innerWidth > 768) return;
-                    
+
                     e.preventDefault();
                     currentY = e.touches[0].clientY - startY;
-                    
+
                     // Limit drag range
                     const maxDrag = window.innerHeight * 0.4;
                     currentY = Math.max(-maxDrag, Math.min(maxDrag, currentY));
-                    
+
                     chatWindow.style.transform = `translateY(${currentY}px)`;
                 });
 
                 chatHeader.addEventListener('touchend', () => {
                     if (!isDragging || window.innerWidth > 768) return;
-                    
+
                     isDragging = false;
-                    
+
                     // Snap to collapsed or expanded state
                     if (Math.abs(currentY) > 100) {
                         chatWindow.classList.toggle('collapsed');
                     }
-                    
+
                     chatWindow.style.transform = '';
                     currentY = 0;
                 });
@@ -4499,7 +4402,7 @@
             function updateLayout() {
                 const isMobile = window.innerWidth <= 768;
                 // Mobile toggle button removed
-                
+
                 // Update body class for mobile layout
                 document.body.classList.toggle('mobile-layout', isMobile);
             }
@@ -4511,25 +4414,25 @@
 
     <script>
         // Global expression test function
-        window.testShyExpression = function() {
+        window.testShyExpression = function () {
             (window.AppConfig?.debug?.log || console.log)('Test bashful expression...');
-            
+
             if (!window.currentVrm || !window.currentVrm.expressionManager) {
                 alert('VRM模型还未Loading complete！请等待load...');
                 return;
             }
 
             console.log('Available expressions:', window.availableExpressions);
-            
+
             // Reset所有表情
             if (window.resetExpressions) {
                 window.resetExpressions();
             }
-            
+
             // Try various shy-related expressions
             const shyExpressions = ['shy', 'embarrassed', 'blush', 'surprised', 'sad'];
             let appliedExpression = null;
-            
+
             shyExpressions.forEach(expr => {
                 if (window.availableExpressions && window.availableExpressions.includes(expr)) {
                     if (window.setExpression) {
@@ -4539,7 +4442,7 @@
                     }
                 }
             });
-            
+
             if (appliedExpression) {
                 document.getElementById('current-expression').textContent = `害羞 (${appliedExpression})`;
                 // 5秒后恢复中性
@@ -4554,7 +4457,7 @@
             }
         };
 
-        window.testHappyExpression = function() {
+        window.testHappyExpression = function () {
             if (!window.currentVrm || !window.currentVrm.expressionManager) {
                 alert('VRM模型还未Loading complete！');
                 return;
@@ -4576,7 +4479,7 @@
             }
         };
 
-        window.testSadExpression = function() {
+        window.testSadExpression = function () {
             if (!window.currentVrm || !window.currentVrm.expressionManager) {
                 alert('VRM模型还未Loading complete！');
                 return;
@@ -4598,7 +4501,7 @@
             }
         };
 
-        window.resetAllExpressions = function() {
+        window.resetAllExpressions = function () {
             if (!window.currentVrm || !window.currentVrm.expressionManager) {
                 alert('VRM模型还未Loading complete！');
                 return;
@@ -4610,11 +4513,11 @@
             (window.AppConfig?.debug?.log || console.log)('All expressions reset');
         };
     </script>
-    
+
     <!-- User profile registration panel -->
 
     <!-- Wallet connection overlay (initially hidden) -->
-    
+
     <!-- User profile management moved to character-select page -->
 
     <!-- Wallet connection overlay (initially hidden) -->
@@ -4623,28 +4526,32 @@
             <div class="wallet-login-icon">🦊</div>
             <h2 class="wallet-login-title">连接wallet开始游戏</h2>
             <p class="wallet-login-subtitle">使用Solanawallet登录，与您的专属AI女友开始聊天</p>
-            
+
             <button class="wallet-connect-btn" onclick="connectWallet()" id="wallet-connect-btn">
                 连接wallet
             </button>
-            
+
             <div class="wallet-options">
                 <a href="https://phantom.app/" target="_blank" class="wallet-option">
-                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #AB9FF2, #7B6BF0); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">P</div>
+                    <div
+                        style="width: 40px; height: 40px; background: linear-gradient(135deg, #AB9FF2, #7B6BF0); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                        P</div>
                     <span>Phantom</span>
                 </a>
                 <a href="https://solflare.com/" target="_blank" class="wallet-option">
-                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #FF6B35, #F7931E); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">S</div>
+                    <div
+                        style="width: 40px; height: 40px; background: linear-gradient(135deg, #FF6B35, #F7931E); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                        S</div>
                     <span>Solflare</span>
                 </a>
             </div>
-            
+
             <p style="font-size: 12px; color: #999; margin-top: 20px;">
                 💡 没有wallet？点击上方图标安装后刷新页面
             </p>
         </div>
     </div>
-    
+
     <!-- Initialize after page load -->
     <script>
         // Function to hide playing notifications
@@ -4667,28 +4574,28 @@
 
         // Also run on DOM mutations
         const observer = new MutationObserver(hidePlayingNotifications);
-        observer.observe(document.body, { 
-            childList: true, 
-            subtree: true, 
-            characterData: true 
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            characterData: true
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Check是否从character selection页面跳转过来
             const hasStoredWallet = localStorage.getItem('wallet_address');
             const hasSelectedCharacter = localStorage.getItem('selectedCharacter');
-            
+
             if (hasStoredWallet && hasSelectedCharacter) {
                 (window.AppConfig?.debug?.log || console.log)('Redirected from character selection, initializing chat...');
-                
+
                 // Wallet already verified on character-select page, directly show logged in status
-                
+
                 // Temporarily skip memory system initialization, use OpenAI directly
                 // console.log('⚠️ Skipping memory system initialization, using OpenAI chat directly');
                 // console.log('💬 Chat system ready');"
 
                 // User profile check moved to init() function, ensure immediate execution after wallet verification
-                
+
                 // Wait for chat system initialization
                 setTimeout(() => {
                     if (window.elizaChatSystem) {
@@ -4714,6 +4621,17 @@
 
 
     </style>
+    <script>
+        // Update diary date to current date
+        document.addEventListener('DOMContentLoaded', () => {
+            const dateEl = document.getElementById('diary-date');
+            if (dateEl) {
+                const now = new Date();
+                const options = { year: 'numeric', month: 'short', day: 'numeric' };
+                dateEl.textContent = now.toLocaleDateString('en-US', options);
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -3,7 +3,7 @@ class I18n {
     constructor() {
         // Check if user has existing language preference
         const existingLang = localStorage.getItem('language');
-        
+
         // Only force English if no preference exists (first visit)
         if (!existingLang) {
             this.currentLang = 'en';
@@ -12,7 +12,7 @@ class I18n {
             // Respect user's language choice
             this.currentLang = existingLang;
         }
-        
+
         this.init();
         // Merge auto-generated character i18n if present
         if (typeof window !== 'undefined' && window.I18N_CHARACTERS) {
@@ -27,26 +27,26 @@ class I18n {
             // Page titles
             'app.title': 'AI Girlfriend Chat Game 🌸',
             'char.select.title': 'WAIFU - Choose Your Girlfriend',
-            
+
             // Character selection page
             'char.select.header': 'WAIFU',
             'char.select.start': 'START',
             'char.select.voice.sample': 'Sample Voice',
             'char.select.language': 'Language: ',
             'char.select.loading': 'Loading character...',
-            
+
             // Chat interface
             'chat.input.placeholder': 'Type your message here...',
             'chat.send': 'Send',
             'chat.voice.play': '🎵 Play Voice',
             'chat.connecting': 'Connecting...',
             'chat.loading': 'Loading...',
-            
+
             // Buttons and controls
             'btn.back': 'Back',
             'btn.retry': 'Retry',
             'btn.refresh': 'Refresh',
-            
+
             // Character descriptions
             'char.alice.desc': 'Lively and cute AI girlfriend',
             'char.ash.desc': 'Calm and rational AI companion',
@@ -73,16 +73,13 @@ class I18n {
             'char.yawl.desc': 'Elegant and intellectual scholar',
             'char.yuuyii.desc': 'Sweet and lovely girl',
             'char.zwei.desc': 'Steadfast and loyal guardian',
-            
+
             // Error messages
             'error.network': 'Network connection failed, please refresh the page',
             'error.save': 'Save failed, please try again',
             'error.delete': 'Delete failed, please try again',
             'error.load': 'Load failed, please refresh the page',
-            'error.wallet.required': 'Please connect your wallet first to start chatting!',
-            'error.wallet.install': 'Please install {wallet} wallet extension first',
-            'wallet.disconnect': 'Disconnect',
-            
+
             // Language options
             'lang.english': 'English',
             'lang.chinese': '中文',
@@ -90,7 +87,7 @@ class I18n {
             // Control panel
             'panel.character.select': 'Character Selection',
             'panel.select.character': 'Select character...',
-            'panel.animation.test': 'Animation Test', 
+            'panel.animation.test': 'Animation Test',
             'panel.select.animation': 'Select animation...',
             'panel.play.animation': 'Play Animation',
 
@@ -107,11 +104,8 @@ class I18n {
             'status.ai.smart': 'AI Smart Mode',
             'status.manual': 'Manual Mode',
 
-            // Wallet verification modal
-            'wallet.verification.title': '🔒 Wallet Verification Required',
-            'wallet.verification.message': 'Please connect your Solana wallet first to access the AI girlfriend chat room. Each wallet address will get a unique personalized experience!',
-            'wallet.verification.button': 'Back to Connect Wallet',
-            
+
+
             // ElizaOS messages
             'eliza.thinking': 'AI is thinking...',
             'eliza.initializing': 'Initializing ElizaOS chat system...',
@@ -137,19 +131,19 @@ class I18n {
             // Profile section headers
             'profile.likes.dislikes': 'Likes & Dislikes',
             'profile.favorites': 'Favorites',
-            
+
             // Profile field labels
             'profile.personality': 'Personality',
             'profile.interests': 'Daily Interests',
             'profile.personality.value': 'Lively, outgoing, playful and cute',
             'profile.interests.value': 'Dancing, singing',
             'profile.likes.label': 'Likes',
-            'profile.dislikes.label': 'Dislikes', 
+            'profile.dislikes.label': 'Dislikes',
             'profile.food.label': 'Food',
             'profile.music.label': 'Music',
             'profile.movies.label': 'Movies',
             'profile.games.label': 'Games',
-            
+
             // Character profiles
             'character.alice.age': '22',
             'character.alice.birthday': 'June 5',
@@ -189,66 +183,36 @@ class I18n {
             'character.sikirei.movies': 'Sci-fi mysteries',
             'character.sikirei.games': 'The Sims',
 
-            // User registration form
-            'registration.title': 'New User Registration',
-            'registration.edit.title': 'Edit Profile',
-            'registration.username': 'Username',
-            'registration.username.placeholder': 'Maximum 12 characters',
-            'registration.username.note': 'Other users can see this (maximum 12 characters)',
-            'registration.display.name': 'Your Name',
-            'registration.display.name.placeholder': 'Name',
-            'registration.display.name.note': 'Choose a sweet name your AI girlfriend will lovingly call you by~ ♡',
-            'registration.birthday': 'Your Birthday',
-            'registration.birthday.year': 'Year',
-            'registration.birthday.month': 'Month',
-            'registration.birthday.day': 'Day',
-            'registration.birthday.note': 'Your AI girlfriend will remember your special day! ♡',
-            'registration.location': 'Location',
-            'registration.location.placeholder': 'e.g.: Beijing, Shanghai, New York',
-            'registration.location.note': 'Your AI girlfriend will remember your location and suggest wonderful local restaurants and activities! ♡',
-            'registration.language': 'Language Setting',
-            'registration.language.select': 'Select Language',
-            'registration.preferences': 'Let your girlfriend get to know you better! ♡',
-            'registration.favorite.food': 'Favorite Food',
-            'registration.favorite.food.placeholder': 'e.g.: Hot pot, pasta, sushi',
-            'registration.favorite.color': 'Favorite Color',
-            'registration.favorite.color.placeholder': 'e.g.: Blue, pink, green',
-            'registration.hobbies': 'Hobbies',
-            'registration.hobbies.placeholder': 'e.g.: Reading, listening to music, gaming',
-            'registration.submit': 'OK',
 
-            // Success and action messages
-            'registration.success': '🎉 Registration Complete! Please choose your AI girlfriend character',
-            'wallet.disconnected': 'Wallet disconnected',
 
             // Status messages
             'status.online': 'Online'
         },
-        
+
         zh: {
             // Page titles
             'app.title': 'AI女友聊天游戏 🌸',
             'char.select.title': 'WAIFU - 选择你的女友角色',
-            
+
             // Character selection page
             'char.select.header': 'WAIFU',
             'char.select.start': '开始',
             'char.select.voice.sample': '试听语音',
             'char.select.language': '语言: ',
             'char.select.loading': '加载角色中...',
-            
+
             // Chat interface
             'chat.input.placeholder': '在此输入你的消息...',
             'chat.send': '发送',
             'chat.voice.play': '🎵 播放语音',
             'chat.connecting': '连接中...',
             'chat.loading': 'Loading...',
-            
+
             // Buttons and controls
             'btn.back': '返回',
             'btn.retry': '重试',
             'btn.refresh': '刷新',
-            
+
             // Character descriptions
             'char.alice.desc': '活泼可爱的AI女友',
             'char.ash.desc': '冷静理性的AI伙伴',
@@ -275,16 +239,13 @@ class I18n {
             'char.yawl.desc': '优雅知性的学者',
             'char.yuuyii.desc': '甜美可爱的少女',
             'char.zwei.desc': '坚定忠诚的守护者',
-            
+
             // Error messages
             'error.network': '网络连接失败，请检查网络后刷新页面',
             'error.save': '保存失败，请重试',
             'error.delete': '删除失败，请重试',
             'error.load': '加载失败，请刷新页面',
-            'error.wallet.required': '请先连接钱包后再开始聊天！',
-            'error.wallet.install': '请先安装 {wallet} 钱包扩展',
-            'wallet.disconnect': '断开连接',
-            
+
             // Language options
             'lang.english': 'English',
             'lang.chinese': '中文',
@@ -292,7 +253,7 @@ class I18n {
             // Control panel
             'panel.character.select': '角色选择',
             'panel.select.character': '选择角色...',
-            'panel.animation.test': '动画测试', 
+            'panel.animation.test': '动画测试',
             'panel.select.animation': '选择动画...',
             'panel.play.animation': '播放动画',
 
@@ -309,11 +270,8 @@ class I18n {
             'status.ai.smart': 'AI智能模式',
             'status.manual': '手动模式',
 
-            // Wallet verification modal
-            'wallet.verification.title': '🔒 需要钱包验证',
-            'wallet.verification.message': '请先连接您的Solana钱包才能访问AI女友聊天室。每个钱包地址都会获得独特的个性化体验！',
-            'wallet.verification.button': '返回连接钱包',
-            
+
+
             // ElizaOS messages
             'eliza.thinking': 'AI正在思考...',
             'eliza.initializing': '初始化ElizaOS聊天系统...',
@@ -339,17 +297,17 @@ class I18n {
             // Profile section headers
             'profile.likes.dislikes': '喜好 & 讨厌',
             'profile.favorites': '最爱',
-            
+
             // Profile field labels
             'profile.personality.value': '活泼外向，调皮可爱',
             'profile.interests.value': '跳舞、唱歌',
             'profile.likes.label': '喜欢',
-            'profile.dislikes.label': '讨厌', 
+            'profile.dislikes.label': '讨厌',
             'profile.food.label': '食物',
             'profile.music.label': '音乐',
             'profile.movies.label': '电影',
             'profile.games.label': '游戏',
-            
+
             // Character profiles
             'character.alice.age': '22',
             'character.alice.birthday': '6月5日',
@@ -389,36 +347,7 @@ class I18n {
             'character.sikirei.movies': '科幻悬疑',
             'character.sikirei.games': '模拟人生',
 
-            // User registration form
-            'registration.title': '用户注册',
-            'registration.edit.title': '编辑资料',
-            'registration.username': '用户名',
-            'registration.username.placeholder': '最多12个字符',
-            'registration.username.note': '其他用户可以看到（最多12个字符）',
-            'registration.display.name': '你的名字',
-            'registration.display.name.placeholder': '姓名',
-            'registration.display.name.note': '「你的名字」是AI女友在聊天中称呼你的名字，对其他用户不可见<br>「用户名」和「你的名字」以后可以在个人资料中修改。',
-            'registration.birthday': '你的生日',
-            'registration.birthday.year': '年',
-            'registration.birthday.month': '月',
-            'registration.birthday.day': '日',
-            'registration.birthday.note': '※生日设置后无法更改',
-            'registration.location': '居住地',
-            'registration.location.placeholder': '例：北京、上海、纽约',
-            'registration.language': '语言设置',
-            'registration.language.select': '选择语言',
-            'registration.preferences': '个人偏好记忆',
-            'registration.favorite.food': '喜欢的食物',
-            'registration.favorite.food.placeholder': '例：火锅、意面、寿司',
-            'registration.favorite.color': '喜欢的颜色',
-            'registration.favorite.color.placeholder': '例：蓝色、粉色、绿色',
-            'registration.hobbies': '兴趣爱好',
-            'registration.hobbies.placeholder': '例：读书、听音乐、游戏',
-            'registration.submit': 'OK',
 
-            // Success and action messages
-            'registration.success': '🎉 注册完成！请选择你的AI女友角色',
-            'wallet.disconnected': '钱包已断开连接',
 
             // Status messages
             'status.online': '在线'
@@ -438,14 +367,14 @@ class I18n {
     // Switch语言
     switchLanguage(lang) {
         if (lang === this.currentLang) return;
-        
+
         this.currentLang = lang;
         localStorage.setItem('language', lang);
         document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
-        
+
         // Trigger语言切换事件
         window.dispatchEvent(new CustomEvent('languageChanged', { detail: lang }));
-        
+
         // Refresh页面以应用新语言
         location.reload();
     }
@@ -466,7 +395,7 @@ class I18n {
 const i18n = new I18n();
 
 // 页面Loading complete后初始化翻译
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // 翻译所有带有 data-i18n 属性的元素
     document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');

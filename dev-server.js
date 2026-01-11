@@ -19,6 +19,9 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+// 静态文件服务 - 提供 index.html 和所有前端资源
+app.use(express.static(__dirname));
+
 // 导入原始处理器
 import handler from './api/index.js';
 

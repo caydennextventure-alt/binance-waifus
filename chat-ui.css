@@ -1,454 +1,378 @@
-/* AI Girlfriend Chat UI Styles */
+/* AI Girlfriend Chat UI - Cute Anime Diary Implementation */
 
-/* Chat window base styles */
-.floating-chat {
+/* Reset & Fonts */
+:root {
+    --paper-color: #fff9f0;
+    /* Creamier, warmer paper */
+    --line-color: #dcd6cc;
+    --margin-line-color: #ffb7b2;
+    /* Soft pink margin */
+    --ink-color-user: #6c5ce7;
+    /* Soft Purple/Blue */
+    --ink-color-ai: #2d3436;
+    --notebook-cover: #ffeaa7;
+}
+
+/* Main Container - The "Diary" */
+.notebook-wrapper {
     position: absolute;
-    bottom: 20px;
-    right: 20px;
+    bottom: 30px;
+    right: 30px;
     width: 380px;
-    height: 500px;
-    background: rgba(255, 255, 255, 0.98);
+    height: 600px;
+
+    background: var(--paper-color);
     border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow:
+        15px 15px 40px rgba(0, 0, 0, 0.1),
+        inset 0 0 60px rgba(255, 222, 173, 0.3);
+    /* Warmer inner glow */
+
+    transform: rotate(-1.5deg);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
     display: flex;
-    flex-direction: column;
     z-index: 1000;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.floating-chat:hover {
-    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.2);
-    transform: translateY(-2px);
-}
-
-.floating-chat.dragging {
-    transform: rotate(2deg) scale(1.02);
-    box-shadow: 0 30px 100px rgba(0, 0, 0, 0.3);
-}
-
-/* Chat window header */
-.chat-window-header {
-    background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
-    padding: 15px 20px;
-    border-radius: 20px 20px 0 0;
-    color: white;
-    cursor: move;
-    user-select: none;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.chat-window-header:active {
-    cursor: grabbing;
-}
-
-.chat-window-title {
-    font-weight: 600;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.chat-window-title::before {
-    content: '💕';
-    font-size: 18px;
-}
-
-.chat-status {
-    font-size: 12px;
-    opacity: 0.9;
-    padding: 4px 8px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-}
-
-/* Chat message area */
-.chat-window-messages {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    background: linear-gradient(180deg, 
-        rgba(255, 255, 255, 0.95) 0%, 
-        rgba(248, 250, 255, 0.95) 100%);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
-
-.chat-window-messages::-webkit-scrollbar {
-    width: 6px;
-}
-
-.chat-window-messages::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 3px;
-}
-
-.chat-window-messages::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #ff6b9d, #c44569);
-    border-radius: 3px;
-}
-
-/* Message bubble */
-.message-bubble {
-    margin-bottom: 15px;
-    max-width: 85%;
-    animation: messageSlideIn 0.3s ease-out;
-    opacity: 1;
-    transform: translateY(0);
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    width: auto;
-}
-
-.message-bubble.user {
-    align-self: flex-end;
-    margin-left: auto;
-}
-
-.message-bubble.ai {
-    align-self: flex-start;
-}
-
-/* Message header */
-.bubble-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 5px;
-    font-size: 12px;
-    opacity: 0.7;
-}
-
-.sender-name {
-    font-weight: 600;
-    color: #666;
-}
-
-.message-time {
-    color: #999;
-}
-
-/* User message styles */
-.message-bubble.user .bubble-content {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 12px 16px;
-    border-radius: 20px 20px 5px 20px;
-    position: relative;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    font-size: 14.4px; /* Original 16px reduced by 10% */
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
-    white-space: normal;
-    max-width: 300px;
-    min-width: 60px;
+    font-family: 'Gochi Hand', 'Gloria Hallelujah', cursive;
     overflow: visible;
-    text-overflow: unset;
 }
 
-.message-bubble.user .bubble-content::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    right: -8px;
-    width: 0;
-    height: 0;
-    border: 8px solid transparent;
-    border-top-color: #667eea;
-    border-left-color: #667eea;
-    transform: rotate(45deg);
+.notebook-wrapper:hover {
+    transform: rotate(0deg) scale(1.02);
+    box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.15);
 }
 
-/* AI message styles */
-.message-bubble.ai .bubble-content {
-    background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
-    color: #2d3436;
-    padding: 12px 16px;
-    border-radius: 20px 20px 20px 5px;
-    position: relative;
-    box-shadow: 0 4px 15px rgba(255, 234, 167, 0.3);
-    font-size: 14.4px; /* Original 16px reduced by 10% */
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
-    white-space: normal;
-    max-width: 300px;
-    min-width: 60px;
-    overflow: visible;
-    text-overflow: unset;
-}
-
-.message-bubble.ai .bubble-content::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: -8px;
-    width: 0;
-    height: 0;
-    border: 8px solid transparent;
-    border-top-color: #ffeaa7;
-    border-right-color: #ffeaa7;
-    transform: rotate(-45deg);
-}
-
-/* Message emotion indicator */
-.message-emotion {
-    text-align: center;
-    margin-top: 5px;
-    font-size: 18px;
-    opacity: 0.8;
-}
-
-/* Typing indicator */
-.typing-indicator {
-    margin-bottom: 15px;
-}
-
-.typing-dots {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 0;
-}
-
-.typing-dots span {
-    width: 8px;
-    height: 8px;
-    background: #ff6b9d;
-    border-radius: 50%;
-    animation: typingBounce 1.4s infinite ease-in-out both;
-}
-
-.typing-dots span:nth-child(1) {
-    animation-delay: -0.32s;
-}
-
-.typing-dots span:nth-child(2) {
-    animation-delay: -0.16s;
-}
-
-.typing-dots span:nth-child(3) {
-    animation-delay: 0s;
-}
-
-@keyframes typingBounce {
-    0%, 80%, 100% {
-        transform: scale(0.8);
-        opacity: 0.5;
-    }
-    40% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-/* Input area */
-.chat-window-input {
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.98);
-    border-radius: 0 0 20px 20px;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.input-container {
-    position: relative;
-    border-radius: 25px;
-    background: linear-gradient(135deg, #f8f9ff 0%, #e8f4f8 100%);
-    border: 2px solid transparent;
-    transition: all 0.3s ease;
-}
-
-.input-container:focus-within {
-    border-color: #ff6b9d;
-    box-shadow: 0 0 20px rgba(255, 107, 157, 0.2);
-    transform: translateY(-1px);
-}
-
-.chat-input-field {
-    width: 100%;
-    padding: 15px 50px 15px 20px;
-    border: none;
-    background: transparent;
-    border-radius: 25px;
-    outline: none;
-    font-size: 14px;
-    color: #2d3436;
-    font-family: inherit;
-}
-
-.chat-input-field::placeholder {
-    color: #999;
-    font-style: italic;
-}
-
-/* Send button */
-.send-button {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 35px;
-    height: 35px;
-    border: none;
-    background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
-    border-radius: 50%;
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-}
-
-.send-button:hover {
-    transform: translateY(-50%) scale(1.1);
-    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
-}
-
-.send-button:active {
-    transform: translateY(-50%) scale(0.95);
-}
-
-/* Quick reply buttons */
-.quick-replies {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-    flex-wrap: wrap;
-}
-
-.quick-reply-btn {
-    padding: 6px 12px;
-    background: rgba(255, 107, 157, 0.1);
-    border: 1px solid rgba(255, 107, 157, 0.3);
-    border-radius: 15px;
-    font-size: 12px;
-    color: #ff6b9d;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.quick-reply-btn:hover {
-    background: rgba(255, 107, 157, 0.2);
-    transform: translateY(-1px);
-}
-
-/* Relationship status indicator */
-.relationship-status {
+/* Stickers Decorations */
+/* Star Sticker - Top Left */
+.notebook-wrapper::before {
+    content: '⭐';
+    font-size: 2rem;
     position: absolute;
     top: -10px;
-    left: 20px;
-    background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
-    padding: 5px 12px;
-    border-radius: 15px;
-    font-size: 11px;
-    font-weight: 600;
-    color: #2d3436;
-    box-shadow: 0 4px 15px rgba(255, 234, 167, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.8);
+    left: -10px;
+    transform: rotate(-15deg);
+    z-index: 20;
+    filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.1));
 }
 
-/* Animation effects */
-@keyframes messageSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+/* Sparkle Sticker - Top Right */
+.notebook-wrapper::after {
+    content: '✨';
+    font-size: 2.5rem;
+    position: absolute;
+    top: -25px;
+    right: -10px;
+    transform: rotate(20deg);
+    z-index: 20;
+    animation: float 3s ease-in-out infinite;
+    filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.1));
 }
 
-/* 响应式设计 */
-@media (max-width: 768px) {
-    .floating-chat {
-        width: calc(100vw - 40px);
-        height: calc(100vh - 40px);
-        bottom: 20px;
-        right: 20px;
-        left: 20px;
-        max-width: none;
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(20deg);
     }
-    
-    .chat-window-messages {
-        padding: 15px;
-    }
-    
-    .message-bubble {
-        max-width: 90%;
+
+    50% {
+        transform: translateY(-5px) rotate(25deg);
     }
 }
 
+/* Tape Sticker - Bottom Right Corner */
+.page-footer::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    right: 20px;
+    width: 60px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.4);
+    transform: rotate(-5deg);
+    backdrop-filter: blur(2px);
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    z-index: 30;
+    border-left: 2px dashed rgba(0, 0, 0, 0.1);
+    border-right: 2px dashed rgba(0, 0, 0, 0.1);
+}
+
+/* The Spiral Binding - Plastic Rings Style */
+.spiral-binding {
+    width: 35px;
+    height: 100%;
+    position: absolute;
+    left: -15px;
+    top: 0;
+    z-index: 5;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 15px 0;
+}
+
+/* Spiral Visuals - Cute Multicolor Pastel Rings */
+.spiral-binding::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: repeating-linear-gradient(180deg,
+            transparent 0,
+            transparent 35px,
+            #fdcb6e 35px,
+            /* Pastel Yellow */
+            #ffeaa7 38px,
+            #fdcb6e 40px,
+            transparent 40px,
+
+            transparent 75px,
+            #ff7675 75px,
+            /* Pastel Red */
+            #fab1a0 78px,
+            #ff7675 80px,
+            transparent 80px,
+
+            transparent 115px,
+            #0984e3 115px,
+            /* Pastel Blue */
+            #74b9ff 118px,
+            #0984e3 120px,
+            transparent 120px);
+}
+
+/* The Paper Page */
+.notebook-page {
+    flex: 1;
+    background-color: transparent;
+    border-radius: 20px;
+
+    /* The Ruled Lines Pattern with Dotted Margin */
+    background-image:
+        /* Cute Dotted Margin Line */
+        linear-gradient(to bottom, var(--margin-line-color) 33%, transparent 33%) 40px 0/2px 6px repeat-y,
+        /* Soft horizontal Lines */
+        linear-gradient(var(--line-color) 1px, transparent 1px);
+
+    background-size: auto, 100% 32px;
+    /* Dotted line auto, Horiz line 32px */
+    background-attachment: local;
+    background-position: 40px 0, 0 31px;
+    background-repeat: repeat-y, repeat;
+
+    display: flex;
+    flex-direction: column;
+    padding-left: 50px;
+    /* More space for margin */
+    padding-right: 20px;
+    padding-top: 15px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Cute Header */
+.page-header {
+    height: 96px;
+    /* 3 lines */
+    border-bottom: 2px dashed #ffb7b2;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 5px;
+    position: relative;
+}
+
+/* Header Stickers - Flower */
+.page-header::after {
+    content: '🌸';
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-size: 1.8rem;
+    transform: rotate(15deg);
+    opacity: 0.9;
+    filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.1));
+}
+
+/* Another random sticker - Cat Paw? */
+.page-header::before {
+    content: '🐾';
+    position: absolute;
+    left: 45px;
+    /* Past spiral */
+    top: 10px;
+    font-size: 1.5rem;
+    transform: rotate(-10deg);
+    opacity: 0.6;
+    color: #fab1a0;
+}
+
+
+.header-date {
+    font-size: 0.9rem;
+    color: #fab1a0;
+    /* Soft coral */
+    font-weight: bold;
+    text-align: right;
+    font-family: 'Gloria Hallelujah', cursive;
+    margin-right: 30px;
+}
+
+.header-title {
+    font-size: 2.2rem;
+    background: linear-gradient(120deg, #e17055, #ff7675);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    text-align: center;
+    font-family: 'Gloria Hallelujah', cursive;
+    /* Marker style */
+    text-shadow: 2px 2px 0px rgba(255, 234, 167, 0.5);
+}
+
+
+/* Message Area */
+.page-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-top: 10px;
+    line-height: 32px;
+    /* Sync with bg */
+}
+
+.page-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.page-content::-webkit-scrollbar-thumb {
+    background: #ffeaa7;
+    border-radius: 2px;
+}
+
+/* Messages */
+.message-bubble {
+    width: 100%;
+    margin-bottom: 0;
+    /* Continuous flow */
+    position: relative;
+    padding: 0;
+    opacity: 0;
+    /* Initially hidden for animation */
+    /* animation handled in JS primarily, but CSS default fallback exists */
+}
+
+/* Content wrapper */
+.bubble-content {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-size: 1.4rem;
+    line-height: 32px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+
+/* User Styles */
+.message-bubble.user {
+    text-align: right;
+}
+
+.message-bubble.user .bubble-content {
+    color: var(--ink-color-user);
+    font-family: 'Gochi Hand', cursive;
+    /* Messy handwriting */
+    transform: rotate(-1deg);
+}
+
+/* AI Styles */
+.message-bubble.ai {
+    text-align: left;
+}
+
+.message-bubble.ai .bubble-content {
+    color: var(--ink-color-ai);
+    font-family: 'Indie Flower', cursive;
+    /* AI's neater handwriting */
+    transform: rotate(0.5deg);
+}
+
+.message-bubble.user .bubble-content::after,
+.message-bubble.ai .bubble-content::after,
+.sender-name,
+.message-time {
+    display: none;
+}
+
+
+/* Footer */
+.page-footer {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    border-top: 2px dashed #b2bec3;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 0 0 20px 0;
+    position: relative;
+}
+
+.input-wrapper {
+    width: 100%;
+    display: flex;
+    position: relative;
+    align-items: center;
+}
+
+.handwritten-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    font-family: 'Gochi Hand', cursive;
+    /* Messy handwriting for input */
+    font-size: 1.5rem;
+    color: var(--ink-color-ai);
+    outline: none;
+    padding: 0 45px 0 0;
+}
+
+.handwritten-input::placeholder {
+    color: #b2bec3;
+    font-style: italic;
+    font-family: 'Gochi Hand', cursive;
+}
+
+.doodle-send-btn {
+    position: absolute;
+    right: 5px;
+    background: transparent;
+    border: none;
+    color: #e17055;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    transition: transform 0.2s;
+}
+
+.doodle-send-btn:hover {
+    transform: scale(1.1) rotate(10deg);
+}
+
+
+/* Mobile */
 @media (max-width: 480px) {
-    .floating-chat {
+    .notebook-wrapper {
         width: 100vw;
         height: 100vh;
         bottom: 0;
         right: 0;
         left: 0;
+        transform: none;
         border-radius: 0;
-        max-width: none;
+        box-shadow: none;
     }
-    
-    .chat-window-header {
-        border-radius: 0;
-    }
-    
-    .chat-window-input {
-        border-radius: 0;
-    }
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-    .floating-chat {
-        background: rgba(30, 30, 30, 0.98);
-        border-color: rgba(255, 255, 255, 0.1);
-    }
-    
-    .chat-window-messages {
-        background: linear-gradient(180deg, 
-            rgba(30, 30, 30, 0.95) 0%, 
-            rgba(20, 20, 20, 0.95) 100%);
-    }
-    
-    .chat-input-field {
-        color: #fff;
-    }
-    
-    .chat-input-field::placeholder {
-        color: #aaa;
-    }
-    
-    .input-container {
-        background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
-    }
-}
-
-/* Special status styles */
-.chat-window.minimized {
-    height: 60px;
-    overflow: hidden;
-}
-
-.chat-window.maximized {
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    bottom: auto;
-    right: auto;
-    border-radius: 0;
 }
