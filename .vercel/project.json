@@ -1,15 +1,1 @@
-{
-  "projectId": "prj_LiQhWIntbiqNv0q8cXHKGDaPbXwx",
-  "orgId": "team_3YUn70oIpCAItKvnBHasVvfo",
-  "settings": {
-    "createdAt": 1756651435625,
-    "framework": null,
-    "devCommand": null,
-    "installCommand": null,
-    "buildCommand": null,
-    "outputDirectory": null,
-    "rootDirectory": null,
-    "directoryListing": false,
-    "nodeVersion": "22.x"
-  }
-}
+{"projectId":"prj_pBG56rugxdquYDfoE72gnwPr9akl","orgId":"team_3YUn70oIpCAItKvnBHasVvfo","projectName":"binancewaifu"}
