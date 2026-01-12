@@ -2,7 +2,10 @@
 
 @font-face {
     font-family: 'Tsumugi';
-    src: url('public/font/tsumugi.ttf') format('truetype');
+    /* Try multiple paths for different environments */
+    src: url('/font/tsumugi.ttf') format('truetype'),
+        url('/public/font/tsumugi.ttf') format('truetype'),
+        url('public/font/tsumugi.ttf') format('truetype');
 }
 
 /* Reset & Fonts */
