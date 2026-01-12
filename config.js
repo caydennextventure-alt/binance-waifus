@@ -5,67 +5,66 @@
 
 const AppConfig = {
     // API server configuration
-    API: {
-        // Development environment
-        development: {
-            baseURL: '', // Relative path because Next.js API routes are on the same origin
-            timeout: 10000
-        },
-        // Production environment - point to custom API domain (CNAME to Bridge)
-        production: {
-            baseURL: 'https://api.xwaifus.com',
-            timeout: 15000
-        }
+    // Development environment
+    development: {
+        baseURL: '', // Relative path
+        timeout: 10000
     },
+    // Production environment
+    production: {
+        baseURL: '', // Use relative path for Vercel deployment
+        timeout: 15000
+    }
+},
 
     // Current environment - auto detection
-    environment: (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) ? 'development' : 'production',
+    environment: (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) ?'development' : 'production',
 
-    // Get API base URL
-    getApiUrl() {
-        const baseURL = this.API[this.environment].baseURL;
-        return baseURL || '';
-    },
+        // Get API base URL
+        getApiUrl() {
+    const baseURL = this.API[this.environment].baseURL;
+    return baseURL || '';
+},
 
-    // Note: Supabase access has been migrated to backend, frontend no longer needs direct access
-    // Supabase configuration removed for better security
+// Note: Supabase access has been migrated to backend, frontend no longer needs direct access
+// Supabase configuration removed for better security
 
-    // Feature toggles
-    features: {
-        enableLocalStorage: false,  // Should be false in production
+// Feature toggles
+features: {
+    enableLocalStorage: false,  // Should be false in production
         enableDebugLogs: (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')), // Auto detection
-        requireWalletSignature: false, // TODO: Should be true in production
+            requireWalletSignature: false, // TODO: Should be true in production
     },
 
-    // Error messages
-    messages: {
-        networkError: 'Network connection failed, please check your network and refresh the page',
+// Error messages
+messages: {
+    networkError: 'Network connection failed, please check your network and refresh the page',
         saveError: 'Save failed, please try again',
-        deleteError: 'Delete failed, please try again',
-        loadError: 'Loading failed, please refresh the page'
-    },
+            deleteError: 'Delete failed, please try again',
+                loadError: 'Loading failed, please refresh the page'
+},
 
-    // Debug logging system
-    debug: {
-        log: function (...args) {
-            if (AppConfig.features.enableDebugLogs) {
-                console.log(...args);
-            }
-        },
-        warn: function (...args) {
-            if (AppConfig.features.enableDebugLogs) {
-                console.warn(...args);
-            }
-        },
-        error: function (...args) {
-            // Always show errors
-            console.error(...args);
-        },
-        info: function (...args) {
-            // Always show important info in production
+// Debug logging system
+debug: {
+    log: function (...args) {
+        if (AppConfig.features.enableDebugLogs) {
             console.log(...args);
         }
+    },
+    warn: function (...args) {
+        if (AppConfig.features.enableDebugLogs) {
+            console.warn(...args);
+        }
+    },
+    error: function (...args) {
+        // Always show errors
+        console.error(...args);
+    },
+    info: function (...args) {
+        // Always show important info in production
+        console.log(...args);
     }
+}
 };
 
 // Export configuration
