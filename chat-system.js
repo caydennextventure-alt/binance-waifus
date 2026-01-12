@@ -98,8 +98,18 @@ class ChatSystem {
     }
 
     getCurrentCharacterId() {
-        // Try to get from URL param or LocalStorage, default to 'alice'
-        return localStorage.getItem('selectedCharacterId') || 'alice';
+        // Read from the actual localStorage key used by index.html
+        try {
+            const stored = localStorage.getItem('selectedCharacter');
+            if (stored) {
+                const data = JSON.parse(stored);
+                console.log('📌 Current character:', data.id || data.name);
+                return data.id || data.name?.toLowerCase() || 'alice';
+            }
+        } catch (e) {
+            console.warn('Failed to parse selectedCharacter:', e);
+        }
+        return 'alice';
     }
 
     appendMessage(role, text) {
