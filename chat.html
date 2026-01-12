@@ -1926,14 +1926,15 @@
         }
 
         // Show mobile notice on page load for mobile devices
+        // DISABLED: User requested to remove this notice
+        /*
         window.addEventListener('load', () => {
-            // Check if notice was already shown in this session
             const noticeShown = sessionStorage.getItem('mobileNoticeShown');
             if (!noticeShown && window.innerWidth <= 768) {
-                // Delay showing notice for better UX after page loads
                 setTimeout(window.showMobileNotice, 2000);
             }
         });
+        */
 
         // Handle window resize to show/hide notice appropriately
         window.addEventListener('resize', () => {
