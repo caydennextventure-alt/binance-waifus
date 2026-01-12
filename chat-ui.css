@@ -25,6 +25,13 @@
     font-size: 1.2rem;
 }
 
+/* Chat Messages - Ensure font applies */
+.message-content {
+    font-family: var(--handwriting-font) !important;
+    font-size: 1.3rem;
+    line-height: 1.5;
+}
+
 /* Pencil Animation Classes */
 .writing-effect {
     overflow: hidden;
