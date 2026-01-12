@@ -21,16 +21,17 @@ app.use(express.json());
 
 // 静态文件服务 - 提供 index.html 和所有前端资源
 app.use(express.static(__dirname));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
-// 导入原始处理器
-import handler from './api/index.js';
+// 动态导入处理器，确保在 dotenv.config() 之后加载
+// import handler from './api/index.js';
 
 // 将 Vercel serverless 函数适配为 Express 路由
 app.use('/api', async (req, res) => {
   // 模拟 Vercel 的 req/res 对象
   const mockReq = {
     ...req,
-    url: req.url,
+    url: req.originalUrl || req.url,
     method: req.method,
     headers: req.headers,
     body: req.body
@@ -48,6 +49,7 @@ app.use('/api', async (req, res) => {
   };
 
   try {
+    const { default: handler } = await import('./api/index.js');
     await handler(mockReq, mockRes);
   } catch (error) {
     console.error('Handler error:', error);

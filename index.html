@@ -2544,48 +2544,7 @@
         // Get detailed profile by character name - based on local config + character.md English authority
         function getCharacterProfile(name, language = 'en') {
             const profilesData = {
-                "Sikirei": {
-                    zh: {
-                        age: 24,
-                        birthday: "October 10th",
-                        zodiac: "Libra",
-                        personality: "Charming, Mysterious, Elegant",
-                        dailyInterests: "Astrology Research",
-                        likes: "星星和夜empty",
-                        dislikes: "光污染",
-                        favoriteFood: "蓝莓布丁、花草茶",
-                        favoriteMusic: "氛围音景",
-                        favoriteMovies: "科幻悬疑",
-                        favoriteGames: "模拟人生"
-                    },
-                    en: {
-                        age: 24,
-                        birthday: "October 10",
-                        zodiac: "Libra",
-                        personality: "Alluring, mysterious, and refined",
-                        dailyInterests: "Astrology research",
-                        likes: "Stars and night sky",
-                        dislikes: "Light pollution",
-                        favoriteFood: "Blueberry pudding, herbal tea",
-                        favoriteMusic: "Ambient soundscapes",
-                        favoriteMovies: "Sci-fi mysteries",
-                        favoriteGames: "The Sims"
-                    }
-                },
                 "Alice": {
-                    zh: {
-                        age: 22,
-                        birthday: "6月5日",
-                        zodiac: "双子座",
-                        personality: "活泼outside向，调皮可爱",
-                        dailyInterests: "跳舞、唱歌",
-                        likes: "鲜花和彩色甜点",
-                        dislikes: "安静和过于严肃的场合",
-                        favoriteFood: "草莓蛋糕、马卡龙",
-                        favoriteMusic: "流行舞曲、K-Pop",
-                        favoriteMovies: "浪漫喜剧",
-                        favoriteGames: "节奏舞蹈游戏"
-                    },
                     en: {
                         age: 22,
                         birthday: "June 5",
@@ -2600,317 +2559,365 @@
                         favoriteGames: "Rhythm dance games"
                     }
                 },
+                "Ash": {
+                    en: {
+                        age: 24,
+                        birthday: "November 12",
+                        zodiac: "Scorpio",
+                        personality: "Calm, reserved, and logical",
+                        dailyInterests: "Reading, coding",
+                        likes: "Nighttime and strong coffee",
+                        dislikes: "Noise and unexpected disruptions",
+                        favoriteFood: "Dark chocolate",
+                        favoriteMusic: "Lo-fi chill, ambient",
+                        favoriteMovies: "Sci-fi, suspense thrillers",
+                        favoriteGames: "Puzzle-adventure titles"
+                    }
+                },
+                "Bobo": {
+                    en: {
+                        age: 19,
+                        birthday: "December 2",
+                        zodiac: "Sagittarius",
+                        personality: "Gentle, shy, and sensitive",
+                        dailyInterests: "Hand-drawn illustration",
+                        likes: "Soft plush toys",
+                        dislikes: "Crowded places",
+                        favoriteFood: "Matcha latte, caramel pudding",
+                        favoriteMusic: "Soft instrumental",
+                        favoriteMovies: "Animated films, feel-good movies",
+                        favoriteGames: "Monument Valley"
+                    }
+                },
+                "Elinyaa": {
+                    en: {
+                        age: 18,
+                        birthday: "February 25",
+                        zodiac: "Pisces",
+                        personality: "Sweet, bubbly, and childlike",
+                        dailyInterests: "Cosplay, role-playing",
+                        likes: "Candy",
+                        dislikes: "Bitter foods",
+                        favoriteFood: "Cotton candy, rainbow candy",
+                        favoriteMusic: "J-Pop, children’s songs",
+                        favoriteMovies: "Fantasy adventures",
+                        favoriteGames: "Role-playing games"
+                    }
+                },
                 "Fliza": {
-                    zh: {
-                        age: 23,
-                        birthday: "August 14",
-                        zodiac: "Leo",
-                        personality: "温暖、off怀、富有同情心",
-                        dailyInterests: "农业、园艺",
-                        likes: "Sunrise and morning dew",
-                        dislikes: "环境污染",
-                        favoriteFood: "Fresh fruit, honey lemonade",
-                        favoriteMusic: "Folk songs, natural soundscapes",
-                        favoriteMovies: "自然纪录片、温馨故事",
-                        favoriteGames: "Animal Crossing"
-                    },
                     en: {
                         age: 23,
                         birthday: "August 14",
                         zodiac: "Leo",
                         personality: "Warm, caring, and compassionate",
-                        dailyInterests: "Agriculture, gardening",
+                        dailyInterests: "Farming, gardening",
                         likes: "Sunrise and morning dew",
-                        dislikes: "Environmental pollution",
-                        favoriteFood: "Fresh fruits, honey lemon water",
-                        favoriteMusic: "Folk music, natural soundscapes",
+                        dislikes: "Pollution",
+                        favoriteFood: "Fresh fruit, honey lemonade",
+                        favoriteMusic: "Folk, natural soundscapes",
                         favoriteMovies: "Nature documentaries, heartwarming stories",
                         favoriteGames: "Animal Crossing"
                     }
                 },
-                "Ash": {
-                    age: 24,
-                    birthday: "11月12日",
-                    zodiac: "天蝎座",
-                    personality: "cold静、inside敛、逻辑思维强",
-                    dailyInterests: "阅读、编程",
-                    likes: "夜晚和浓咖啡",
-                    dislikes: "噪音和突然的干扰",
-                    favoriteFood: "黑巧克力",
-                    favoriteMusic: "Lo-fi轻音乐、氛围音乐",
-                    favoriteMovies: "科幻、悬疑惊悚片",
-                    favoriteGames: "解谜冒险游戏"
-                },
-                "Bobo": {
-                    age: 19,
-                    birthday: "12月2日",
-                    zodiac: "射手座",
-                    personality: "温柔、害羞、sensitive",
-                    dailyInterests: "手绘插画",
-                    likes: "柔软的毛绒玩具",
-                    dislikes: "拥挤的地方",
-                    favoriteFood: "抹茶拿铁、焦糖布丁",
-                    favoriteMusic: "轻柔器乐",
-                    favoriteMovies: "动画电影、温情电影",
-                    favoriteGames: "纪念碑谷"
-                },
-                "Elinyaa": {
-                    age: 18,
-                    birthday: "2月25日",
-                    zodiac: "双鱼座",
-                    personality: "甜美、活泼、童true",
-                    dailyInterests: "Cosplay、character扮演",
-                    likes: "各种糖果",
-                    dislikes: "苦味食物",
-                    favoriteFood: "棉花糖、彩虹糖",
-                    favoriteMusic: "J-Pop、儿歌",
-                    favoriteMovies: "奇幻冒险",
-                    favoriteGames: "character扮演游戏"
-                },
-                "Fliza": {
-                    age: 23,
-                    birthday: "August 14",
-                    zodiac: "Leo",
-                    personality: "温暖、off怀、富有同情心",
-                    dailyInterests: "农业、园艺",
-                    likes: "Sunrise and morning dew",
-                    dislikes: "环境污染",
-                    favoriteFood: "Fresh fruit, honey lemonade",
-                    favoriteMusic: "Folk songs, natural soundscapes",
-                    favoriteMovies: "自然纪录片、温馨故事",
-                    favoriteGames: "Animal Crossing"
-                },
                 "Imeris": {
-                    age: 25,
-                    birthday: "4月2日",
-                    zodiac: "牡羊座",
-                    personality: "细心、温柔、乐于助人",
-                    dailyInterests: "护理研究、healthy教育",
-                    likes: "樱花和柔和的粉色调",
-                    dislikes: "conflict",
-                    favoriteFood: "樱花糕点",
-                    favoriteMusic: "new世纪音乐、钢琴独奏",
-                    favoriteMovies: "医疗剧、治愈纪录片",
-                    favoriteGames: "Hospital Management Simulator"
+                    en: {
+                        age: 25,
+                        birthday: "April 2",
+                        zodiac: "Aries",
+                        personality: "Attentive, gentle, and helpful",
+                        dailyInterests: "Nursing research, health education",
+                        likes: "Cherry blossoms",
+                        dislikes: "Conflict",
+                        favoriteFood: "Cherry blossom pastries",
+                        favoriteMusic: "New Age, solo piano",
+                        favoriteMovies: "Medical dramas, healing documentaries",
+                        favoriteGames: "Hospital sims"
+                    }
                 },
                 "Kyoko": {
-                    age: 20,
-                    birthday: "10月30日",
-                    zodiac: "天蝎座",
-                    personality: "独立、坚韧、自信",
-                    dailyInterests: "徒步、攀岩",
-                    likes: "清new的山间empty气",
-                    dislikes: "人群和噪音",
-                    favoriteFood: "烤鱼、能量棒",
-                    favoriteMusic: "电子、摇滚",
-                    favoriteMovies: "动作冒险",
-                    favoriteGames: "塔防策略游戏"
+                    en: {
+                        age: 20,
+                        birthday: "October 30",
+                        zodiac: "Scorpio",
+                        personality: "Independent, resilient, and confident",
+                        dailyInterests: "Hiking, rock climbing",
+                        likes: "Mountain air",
+                        dislikes: "Crowds",
+                        favoriteFood: "Grilled fish, energy bars",
+                        favoriteMusic: "Electronic, rock",
+                        favoriteMovies: "Action adventures",
+                        favoriteGames: "Tower defense"
+                    }
                 },
                 "Lena": {
-                    age: 21,
-                    birthday: "5月9日",
-                    zodiac: "金牛座",
-                    personality: "优雅、自信、有魅力",
-                    dailyInterests: "时装设计、花艺",
-                    likes: "红酒和精致的under午茶",
-                    dislikes: "迟to和粗鲁",
-                    favoriteFood: "黑松露意面、红酒",
-                    favoriteMusic: "爵士乐",
-                    favoriteMovies: "艺术剧情片",
-                    favoriteGames: "模拟人生"
+                    en: {
+                        age: 21,
+                        birthday: "May 9",
+                        zodiac: "Taurus",
+                        personality: "Elegant, confident, and charismatic",
+                        dailyInterests: "Fashion design, floral arranging",
+                        likes: "Red wine",
+                        dislikes: "Rudeness",
+                        favoriteFood: "Truffle pasta, red wine",
+                        favoriteMusic: "Jazz",
+                        favoriteMovies: "Art-house dramas",
+                        favoriteGames: "The Sims"
+                    }
                 },
                 "Lilium": {
-                    age: 24,
-                    birthday: "1月15日",
-                    zodiac: "摩羯座",
-                    personality: "hot情、充full活力、large胆",
-                    dailyInterests: "街舞、健身",
-                    likes: "火锅和辛辣食物",
-                    dislikes: "cold菜",
-                    favoriteFood: "麻辣火锅、辣味零食",
-                    favoriteMusic: "EDM、Hip-hop",
-                    favoriteMovies: "浪漫剧情片",
-                    favoriteGames: "音乐节奏游戏"
+                    en: {
+                        age: 24,
+                        birthday: "January 15",
+                        zodiac: "Capricorn",
+                        personality: "Passionate, energetic, and bold",
+                        dailyInterests: "Street dance, fitness",
+                        likes: "Hot pot",
+                        dislikes: "Cold dishes",
+                        favoriteFood: "Spicy hot pot, chili snacks",
+                        favoriteMusic: "EDM, hip-hop",
+                        favoriteMovies: "Romantic dramas",
+                        favoriteGames: "Rhythm music games"
+                    }
                 },
                 "Maple": {
-                    age: 22,
-                    birthday: "9月25日",
-                    zodiac: "Libra",
-                    personality: "温暖、细心、耐心",
-                    dailyInterests: "烘焙、插花",
-                    likes: "枫叶图案",
-                    dislikes: "急躁",
-                    favoriteFood: "枫糖华夫饼、南瓜派",
-                    favoriteMusic: "原声民谣、轻爵士",
-                    favoriteMovies: "励志动画电影",
-                    favoriteGames: "星露谷物语"
+                    en: {
+                        age: 22,
+                        birthday: "September 25",
+                        zodiac: "Libra",
+                        personality: "Warm, nurturing, and patient",
+                        dailyInterests: "Baking, flower arranging",
+                        likes: "Maple motifs",
+                        dislikes: "Irritability",
+                        favoriteFood: "Maple waffles, pumpkin pie",
+                        favoriteMusic: "Acoustic folk, soft jazz",
+                        favoriteMovies: "Uplifting animated films",
+                        favoriteGames: "Stardew Valley"
+                    }
                 },
                 "Miru": {
-                    age: 19,
-                    birthday: "12月29日",
-                    zodiac: "摩羯座",
-                    personality: "梦幻、可爱、有点害羞",
-                    dailyInterests: "收集毛绒玩具",
-                    likes: "云朵和柔软的质感",
-                    dislikes: "黑暗",
-                    favoriteFood: "棉花糖",
-                    favoriteMusic: "Lo-fibackground音乐、氛围音景",
-                    favoriteMovies: "奇幻动画",
-                    favoriteGames: "生活模拟游戏"
+                    en: {
+                        age: 19,
+                        birthday: "December 29",
+                        zodiac: "Capricorn",
+                        personality: "Dreamy, cute, and shy",
+                        dailyInterests: "Collecting plush toys",
+                        likes: "Clouds",
+                        dislikes: "Darkness",
+                        favoriteFood: "Cotton candy",
+                        favoriteMusic: "Lo-fi, ambient",
+                        favoriteMovies: "Fantasy animations",
+                        favoriteGames: "Life-simulation games"
+                    }
                 },
-                "Miu Miu": {
-                    age: 20,
-                    birthday: "3月8日",
-                    zodiac: "双鱼座",
-                    personality: "古怪、有创意、爱玩",
-                    dailyInterests: "潮流DIY手工",
-                    likes: "糖果和鲜艳color",
-                    dislikes: "严肃",
-                    favoriteFood: "彩虹糖、巧克力",
-                    favoriteMusic: "K-Pop、流行音乐",
-                    favoriteMovies: "轻喜剧、动画短片",
-                    favoriteGames: "三消益智游戏"
+                "Miumiu": {
+                    en: {
+                        age: 20,
+                        birthday: "March 8",
+                        zodiac: "Pisces",
+                        personality: "Quirky, creative, and playful",
+                        dailyInterests: "DIY crafts",
+                        likes: "Bright colors",
+                        dislikes: "Seriousness",
+                        favoriteFood: "Rainbow candy, chocolate",
+                        favoriteMusic: "K-Pop, pop",
+                        favoriteMovies: "Light comedies",
+                        favoriteGames: "Match-3 puzzles"
+                    }
+                },
+                "Neco": {
+                    en: {
+                        age: 25,
+                        birthday: "July 17",
+                        zodiac: "Cancer",
+                        personality: "Cool, intellectual, and elegant",
+                        dailyInterests: "Observing cats, photography",
+                        likes: "Quiet corners",
+                        dislikes: "Noise",
+                        favoriteFood: "Sashimi, sushi",
+                        favoriteMusic: "Solo piano",
+                        favoriteMovies: "Art films",
+                        favoriteGames: "Neko Atsume"
+                    }
                 },
                 "Nekona": {
-                    age: 18,
-                    birthday: "6月27日",
-                    zodiac: "巨蟹座",
-                    personality: "温柔、狡黠、有点神秘",
-                    dailyInterests: "夜晚散步、收集叶子",
-                    likes: "夜晚",
-                    dislikes: "直射阳光",
-                    favoriteFood: "芒果冰沙、莓果拼盘",
-                    favoriteMusic: "轻松节拍、氛围音乐",
-                    favoriteMovies: "心理惊悚片",
-                    favoriteGames: "解谜冒险"
+                    en: {
+                        age: 18,
+                        birthday: "June 27",
+                        zodiac: "Cancer",
+                        personality: "Gentle, cunning, and mysterious",
+                        dailyInterests: "Night strolls, leaf collecting",
+                        likes: "Night",
+                        dislikes: "Sunlight",
+                        favoriteFood: "Mango smoothie, berries",
+                        favoriteMusic: "Chill beats, ambient",
+                        favoriteMovies: "Thrillers",
+                        favoriteGames: "Puzzle adventures"
+                    }
                 },
                 "Notia": {
-                    age: 23,
-                    birthday: "9月1日",
-                    zodiac: "处女座",
-                    personality: "沉着、优雅、古典",
-                    dailyInterests: "茶道、插花",
-                    likes: "茶香",
-                    dislikes: "浓咖啡",
-                    favoriteFood: "日式点心、抹茶冰淇淋",
-                    favoriteMusic: "traditional民乐",
-                    favoriteMovies: "history剧",
-                    favoriteGames: "卡牌策略"
+                    en: {
+                        age: 23,
+                        birthday: "September 1",
+                        zodiac: "Virgo",
+                        personality: "Calm, graceful, and classical",
+                        dailyInterests: "Tea ceremony, flower arranging",
+                        likes: "Tea fragrance",
+                        dislikes: "Coffee",
+                        favoriteFood: "Japanese sweets, matcha ice cream",
+                        favoriteMusic: "Folk music",
+                        favoriteMovies: "Historical dramas",
+                        favoriteGames: "Card strategy"
+                    }
                 },
                 "QuQu": {
-                    age: 22,
-                    birthday: "4月20日",
-                    zodiac: "金牛座",
-                    personality: "large胆、直率、hot情",
-                    dailyInterests: "极限运动",
-                    likes: "户outside冒险",
-                    dislikes: "限制",
-                    favoriteFood: "烤串、烤玉米",
-                    favoriteMusic: "摇滚、金属",
-                    favoriteMovies: "动作large片",
-                    favoriteGames: "竞技many人游戏"
+                    en: {
+                        age: 22,
+                        birthday: "April 20",
+                        zodiac: "Taurus",
+                        personality: "Bold, passionate, and straightforward",
+                        dailyInterests: "Extreme sports",
+                        likes: "Adventures",
+                        dislikes: "Restrictions",
+                        favoriteFood: "Grilled skewers, corn",
+                        favoriteMusic: "Rock, metal",
+                        favoriteMovies: "Action blockbusters",
+                        favoriteGames: "Competitive multiplayer"
+                    }
                 },
                 "Rainy": {
-                    age: 21,
-                    birthday: "11月5日",
-                    zodiac: "天蝎座",
-                    personality: "安静、温柔、inside省",
-                    dailyInterests: "雨middle漫步",
-                    likes: "雨声",
-                    dislikes: "炎hot晴天",
-                    favoriteFood: "拉面、hot巧克力",
-                    favoriteMusic: "slow节奏爵士",
-                    favoriteMovies: "艺术和独立电影",
-                    favoriteGames: "互动small说"
+                    en: {
+                        age: 21,
+                        birthday: "November 5",
+                        zodiac: "Scorpio",
+                        personality: "Quiet, gentle, and introspective",
+                        dailyInterests: "Walking in the rain",
+                        likes: "Rain",
+                        dislikes: "Hot days",
+                        favoriteFood: "Ramen, hot chocolate",
+                        favoriteMusic: "Slow jazz",
+                        favoriteMovies: "Indie films",
+                        favoriteGames: "Interactive fiction"
+                    }
                 },
                 "Rindo": {
-                    age: 25,
-                    birthday: "2月1日",
-                    zodiac: "水瓶座",
-                    personality: "cold静、坚韧、坚定",
-                    dailyInterests: "剑道练习",
-                    likes: "寒cold气候",
-                    dislikes: "过甜的食物",
-                    favoriteFood: "烤羊肉串",
-                    favoriteMusic: "金属摇滚、电子音乐",
-                    favoriteMovies: "武侠动作片",
-                    favoriteGames: "硬核动作游戏"
+                    en: {
+                        age: 25,
+                        birthday: "February 1",
+                        zodiac: "Aquarius",
+                        personality: "Cool-headed, tough, and determined",
+                        dailyInterests: "Kendo practice",
+                        likes: "Cold",
+                        dislikes: "Sweetness",
+                        favoriteFood: "Grilled lamb skewers",
+                        favoriteMusic: "Metal, electronic",
+                        favoriteMovies: "Martial arts action films",
+                        favoriteGames: "Hardcore action"
+                    }
                 },
                 "Sikirei": {
-                    age: 24,
-                    birthday: "October 10th",
-                    zodiac: "Libra",
-                    personality: "Charming, Mysterious, Elegant",
-                    dailyInterests: "Astrology Research",
-                    likes: "星星和夜empty",
-                    dislikes: "光污染",
-                    favoriteFood: "蓝莓布丁、花草茶",
-                    favoriteMusic: "氛围音景",
-                    favoriteMovies: "科幻悬疑",
-                    favoriteGames: "模拟人生"
+                    en: {
+                        age: 24,
+                        birthday: "October 10",
+                        zodiac: "Libra",
+                        personality: "Alluring, mysterious, and refined",
+                        dailyInterests: "Astrology research",
+                        likes: "Stars and night sky",
+                        dislikes: "Light pollution",
+                        favoriteFood: "Blueberry pudding, herbal tea",
+                        favoriteMusic: "Ambient soundscapes",
+                        favoriteMovies: "Sci-fi mysteries",
+                        favoriteGames: "The Sims"
+                    }
                 },
                 "Vivi": {
-                    age: 19,
-                    birthday: "8月25日",
-                    zodiac: "处女座",
-                    personality: "outside向、on朗、善于交际",
-                    dailyInterests: "直播、收集漫画",
-                    likes: "hot闹聚会",
-                    dislikes: "害羞和沉默",
-                    favoriteFood: "披萨、零食拼盘",
-                    favoriteMusic: "流行音乐、DJ混音",
-                    favoriteMovies: "喜剧片",
-                    favoriteGames: "MMO、休闲游戏"
+                    en: {
+                        age: 19,
+                        birthday: "August 25",
+                        zodiac: "Virgo",
+                        personality: "Outgoing, cheerful, and sociable",
+                        dailyInterests: "Live streaming, manga collecting",
+                        likes: "Gatherings",
+                        dislikes: "Shyness",
+                        favoriteFood: "Pizza, snack platters",
+                        favoriteMusic: "Pop, remixes",
+                        favoriteMovies: "Comedies",
+                        favoriteGames: "MMOs, casual"
+                    }
                 },
                 "Wolf": {
-                    personality: "野性、孤傲、本能驱动",
-                    dailyInterests: "夜晚探索、野outside生存",
-                    likes: "森林和月光",
-                    dislikes: "城市噪音",
-                    favoriteFood: "烤鹿肉",
-                    favoriteMusic: "民谣和原声吉他",
-                    favoriteMovies: "恐怖惊悚片",
-                    favoriteGames: "生存制作游戏"
+                    en: {
+                        age: 20,
+                        birthday: "January 28",
+                        zodiac: "Aquarius",
+                        personality: "Wild, aloof, and instinct-driven",
+                        dailyInterests: "Night exploration, survival",
+                        likes: "Forests",
+                        dislikes: "Noise",
+                        favoriteFood: "Roasted venison",
+                        favoriteMusic: "Folk, acoustic",
+                        favoriteMovies: "Horror thrillers",
+                        favoriteGames: "Survival crafting"
+                    }
                 },
                 "Wolferia": {
-                    personality: "自由奔放、不拘束、爱冒险",
-                    dailyInterests: "滑雪、极限运动",
-                    likes: "雪on运动",
-                    dislikes: "炽hothigh温",
-                    favoriteFood: "冰淇淋、甜筒",
-                    favoriteMusic: "迷幻电音",
-                    favoriteMovies: "冒险奇幻",
-                    favoriteGames: "冬季运动游戏"
+                    en: {
+                        age: 23,
+                        birthday: "March 30",
+                        zodiac: "Aries",
+                        personality: "Free-spirited, adventurous",
+                        dailyInterests: "Skiing, extreme sports",
+                        likes: "Snow",
+                        dislikes: "Heat",
+                        favoriteFood: "Ice cream, cones",
+                        favoriteMusic: "Trance",
+                        favoriteMovies: "Adventure fantasies",
+                        favoriteGames: "Winter sports"
+                    }
                 },
                 "Yawl": {
-                    personality: "优雅、知性、cold淡",
-                    dailyInterests: "古典文学鉴赏",
-                    likes: "精致咖啡厅",
-                    dislikes: "浓茶和噪音",
-                    favoriteFood: "法式糕点、红茶",
-                    favoriteMusic: "古典音乐",
-                    favoriteMovies: "艺术剧情片",
-                    favoriteGames: "解谜推理"
+                    en: {
+                        age: 24,
+                        birthday: "May 2",
+                        zodiac: "Taurus",
+                        personality: "Elegant, intellectual, aloof",
+                        dailyInterests: "Literature appreciation",
+                        likes: "Cafés",
+                        dislikes: "Noise",
+                        favoriteFood: "Pastries, black tea",
+                        favoriteMusic: "Classical",
+                        favoriteMovies: "Art-house dramas",
+                        favoriteGames: "Puzzle mysteries"
+                    }
                 },
-                "Yuu Yii": {
-                    personality: "甜美、kawaii风格、乐于助人",
-                    dailyInterests: "手工制作发饰",
-                    likes: "泡泡和粉色调",
-                    dislikes: "现实压力",
-                    favoriteFood: "草莓慕斯、棉花糖",
-                    favoriteMusic: "J-Pop、儿歌",
-                    favoriteMovies: "动漫电影",
-                    favoriteGames: "生活模拟游戏"
+                "Yuuyii": {
+                    en: {
+                        age: 18,
+                        birthday: "February 14",
+                        zodiac: "Aquarius",
+                        personality: "Sweet, kawaii-style, helpful",
+                        dailyInterests: "Crafting hair accessories",
+                        likes: "Pastels",
+                        dislikes: "Stress",
+                        favoriteFood: "Strawberry mousse, cotton candy",
+                        favoriteMusic: "J-Pop, children’s songs",
+                        favoriteMovies: "Anime films",
+                        favoriteGames: "Life sims"
+                    }
                 },
                 "Zwei": {
-                    personality: "稳重、保护欲强、忠诚",
-                    dailyInterests: "武术训练",
-                    likes: "夜晚和宁静",
-                    dislikes: "刺眼光线",
-                    favoriteFood: "北京烤鸭、牛排",
-                    favoriteMusic: "打击乐节奏",
-                    favoriteMovies: "战争史诗、奇幻史诗",
-                    favoriteGames: "策略模拟"
+                    en: {
+                        age: 25,
+                        birthday: "December 5",
+                        zodiac: "Sagittarius",
+                        personality: "Steady, protective, loyal",
+                        dailyInterests: "Martial arts training",
+                        likes: "Night",
+                        dislikes: "Harsh light",
+                        favoriteFood: "Peking duck, steak",
+                        favoriteMusic: "Percussion rhythms",
+                        favoriteMovies: "War epics, epic fantasies",
+                        favoriteGames: "Strategy sims"
+                    }
                 }
             };
 

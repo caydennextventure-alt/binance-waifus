@@ -1,16 +1,56 @@
 /* AI Girlfriend Chat UI - Cute Anime Diary Implementation */
 
+@font-face {
+    font-family: 'Tsumugi';
+    src: url('public/font/tsumugi.ttf') format('truetype');
+}
+
 /* Reset & Fonts */
 :root {
     --paper-color: #fff9f0;
-    /* Creamier, warmer paper */
     --line-color: #dcd6cc;
     --margin-line-color: #ffb7b2;
-    /* Soft pink margin */
     --ink-color-user: #6c5ce7;
-    /* Soft Purple/Blue */
     --ink-color-ai: #2d3436;
     --notebook-cover: #ffeaa7;
+    /* Custom Local Font with Google Font Fallback */
+    --handwriting-font: 'Tsumugi', 'Caveat', cursive;
+}
+
+.notebook-wrapper {
+    font-family: var(--handwriting-font);
+    font-size: 1.2rem;
+}
+
+/* Pencil Animation Classes */
+.writing-effect {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid orange;
+    /* Cursor */
+    animation: typing 2s steps(40, end), blink-caret .75s step-end infinite;
+}
+
+@keyframes typing {
+    from {
+        width: 0
+    }
+
+    to {
+        width: 100%
+    }
+}
+
+@keyframes blink-caret {
+
+    from,
+    to {
+        border-color: transparent
+    }
+
+    50% {
+        border-color: orange;
+    }
 }
 
 /* Main Container - The "Diary" */
@@ -218,7 +258,7 @@
     /* Soft coral */
     font-weight: bold;
     text-align: right;
-    font-family: 'Gloria Hallelujah', cursive;
+    font-family: var(--handwriting-font);
     margin-right: 30px;
 }
 
@@ -229,7 +269,7 @@
     -webkit-text-fill-color: transparent;
     font-weight: bold;
     text-align: center;
-    font-family: 'Gloria Hallelujah', cursive;
+    font-family: var(--handwriting-font);
     /* Marker style */
     text-shadow: 2px 2px 0px rgba(255, 234, 167, 0.5);
 }
@@ -332,7 +372,7 @@
     width: 100%;
     background: transparent;
     border: none;
-    font-family: 'Gochi Hand', cursive;
+    font-family: var(--handwriting-font);
     /* Messy handwriting for input */
     font-size: 1.5rem;
     color: var(--ink-color-ai);

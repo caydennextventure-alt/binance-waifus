@@ -57,7 +57,9 @@ class ElizaOSChatSystem {
             console.log('✅ ' + (window.i18n ? window.i18n.t('eliza.init.complete') : 'ElizaOS chat system initialized'));
         } catch (error) {
             console.error('❌ ' + (window.i18n ? window.i18n.t('eliza.init.failed') : 'ElizaOS initialization failed') + ':', error);
-            // Silent fallback on initialization error
+            // Fallback: Still try to setup UI and listeners even if health check failed
+            this.setupElizaOSUI();
+            this.setupEventListeners();
         }
     }
 
@@ -311,12 +313,24 @@ class ElizaOSChatSystem {
     }
 
     setupEventListeners() {
+        console.log('🔌 Setting up event listeners...');
         // Send message
         const sendButton = document.getElementById('send-btn');
-        const messageInput = document.getElementById('message-input');
+        const messageInput = document.getElementById('chat-input-field');
+
+        console.log('🔍 Elements found:', {
+            sendButton: !!sendButton,
+            messageInput: !!messageInput
+        });
 
         if (sendButton) {
-            sendButton.addEventListener('click', () => this.handleSendMessage());
+            console.log('✅ Attaching click listener to send button');
+            sendButton.addEventListener('click', () => {
+                console.log('🖱️ Send button clicked');
+                this.handleSendMessage();
+            });
+        } else {
+            console.error('❌ Send button not found!');
         }
 
         if (messageInput) {
@@ -411,14 +425,15 @@ class ElizaOSChatSystem {
                 return;
             }
 
-            // Send to ElizaOS backend
+            // Send to Direct LLM backend
             const requestData = {
-                userId: this.currentUser.id,
+                // Remove userId to simplify (backend doesn't use it yet)
                 characterId: this.currentCharacter.id.toLowerCase(),
-                message: message
+                message: message,
+                history: [] // Implement history if needed, for now start fresh or keep local
             };
 
-            (window.AppConfig?.debug?.log || console.log)('Send to ElizaOS:', requestData);
+            (window.AppConfig?.debug?.log || console.log)('Send to Direct LLM:', requestData);
 
             const response = await fetch(`${this.apiBaseURL}/api/chat`, {
                 method: 'POST',
@@ -426,9 +441,10 @@ class ElizaOSChatSystem {
                 body: JSON.stringify(requestData)
             });
 
-            (window.AppConfig?.debug?.log || console.log)('HTTP status:', response.status, response.statusText);
-
             const data = await response.json();
+
+            if (data.error) throw new Error(data.error);
+
             this.handleAIResponse(data);
 
         } catch (error) {
@@ -440,253 +456,269 @@ class ElizaOSChatSystem {
         }
     }
 
-    // Helper to process response data (shared by Mock and Real)
+    // Helper to process response data
     handleAIResponse(data) {
-        (window.AppConfig?.debug?.log || console.log)('ElizaOS response received');
+        (window.AppConfig?.debug?.log || console.log)('AI response received', data);
 
-        if (data.success && data.data) {
-            (window.AppConfig?.debug?.log || console.log)('Prepare to display AI reply');
+        // Normalize response
+        // ElizaOS used data.data.text, Direct LLM uses data.text
+        const replyText = data.text || (data.data && data.data[0] ? data.data[0].text : "I... I don't know what to say.");
+
+        if (replyText) {
             // Add AI reply message
             const aiMessage = {
-                id: Date.now() + 1,
-                sender: 'ai',
-                content: data.data.response,
+                id: Date.now().toString(),
+                role: 'assistant',
+                text: replyText,
+                timestamp: new Date()
+            };
+            this.addMessageToUI(aiMessage);
+
+            // Try to speak if voice is enabled
+            if (window.voiceManager && !this.isMuted) {
+                window.voiceManager.speak(replyText, this.currentCharacter.id);
+            }
+        }
+    }
+    id: Date.now() + 1,
+        sender: 'ai',
+            content: data.data.response,
                 timestamp: new Date().toISOString(),
-                emotion: data.data.emotion || 'neutral',
-                relationshipLevel: data.data.relationship_level || 1
+                    emotion: data.data.emotion || 'neutral',
+                        relationshipLevel: data.data.relationship_level || 1
             };
 
-            (window.AppConfig?.debug?.log || console.log)('AI message object prepared');
-            this.chatHistory.push(aiMessage);
+(window.AppConfig?.debug?.log || console.log)('AI message object prepared');
+this.chatHistory.push(aiMessage);
 
-            // Update relationship data
-            if (data.data.relationship_level) {
-                this.relationshipData = {
-                    ...this.relationshipData,
-                    relationship_level: data.data.relationship_level
-                };
-                this.updateRelationshipUI();
-            }
+// Update relationship data
+if (data.data.relationship_level) {
+    this.relationshipData = {
+        ...this.relationshipData,
+        relationship_level: data.data.relationship_level
+    };
+    this.updateRelationshipUI();
+}
 
-            // Delay before displaying reply
-            (window.AppConfig?.debug?.log || console.log)('AI reply will display in 1s...');
-            setTimeout(() => {
-                (window.AppConfig?.debug?.log || console.log)('Start displaying AI reply...');
-                this.hideTypingIndicator();
-                this.updateChatUI(aiMessage);
+// Delay before displaying reply
+(window.AppConfig?.debug?.log || console.log)('AI reply will display in 1s...');
+setTimeout(() => {
+    (window.AppConfig?.debug?.log || console.log)('Start displaying AI reply...');
+    this.hideTypingIndicator();
+    this.updateChatUI(aiMessage);
 
-                // 🎤 Store voice data and auto play
-                if (aiMessage.audio && aiMessage.audio.data) {
-                    this.voiceStorage.set(aiMessage.id, aiMessage.audio);
-                    (window.AppConfig?.debug?.log || console.log)('Auto-playing voice...');
-                    this.playVoiceMessage(aiMessage.audio);
-                }
+    // 🎤 Store voice data and auto play
+    if (aiMessage.audio && aiMessage.audio.data) {
+        this.voiceStorage.set(aiMessage.id, aiMessage.audio);
+        (window.AppConfig?.debug?.log || console.log)('Auto-playing voice...');
+        this.playVoiceMessage(aiMessage.audio);
+    }
 
-                // Trigger VRM expression and voice
-                this.triggerVRMResponse(aiMessage);
+    // Trigger VRM expression and voice
+    this.triggerVRMResponse(aiMessage);
 
-                this.showMemoryStatus('Memory updated');
+    this.showMemoryStatus('Memory updated');
 
-                // Show relationship changes
-                if (data.data.relationship_level > (this.relationshipData?.relationship_level || 1)) {
-                    this.showContextInfo(`Relationship level increased to ${data.data.relationship_level}!`);
-                }
+    // Show relationship changes
+    if (data.data.relationship_level > (this.relationshipData?.relationship_level || 1)) {
+        this.showContextInfo(`Relationship level increased to ${data.data.relationship_level}!`);
+    }
 
-            }, 500); // Shorter delay for mock feels snappier
+}, 500); // Shorter delay for mock feels snappier
 
         } else {
-            console.error('❌ ElizaOS response format error:', data);
-            throw new Error(data.error || 'Send failed');
+    console.error('❌ ElizaOS response format error:', data);
+    throw new Error(data.error || 'Send failed');
+}
+    }
+
+updateChatUI(message, animate = true) {
+    (window.AppConfig?.debug?.log || console.log)('updateChatUI called with', {
+        sender: message.sender,
+        content: message.content,
+        animate: animate
+    });
+
+    const messagesContainer = document.getElementById('chat-window-messages');
+    if (!messagesContainer) {
+        console.error('❌ chat-window-messages container not found');
+        return;
+    }
+
+    // Add character class to container for avatar display
+    if (message.sender === 'ai' && this.currentCharacter) {
+        const characterClass = this.getCharacterClassName(this.currentCharacter.name);
+        if (characterClass) {
+            messagesContainer.className = `chat-window-messages ${characterClass}`;
         }
     }
 
-    updateChatUI(message, animate = true) {
-        (window.AppConfig?.debug?.log || console.log)('updateChatUI called with', {
-            sender: message.sender,
-            content: message.content,
-            animate: animate
-        });
+    const messageElement = document.createElement('div');
+    messageElement.className = `message-bubble ${message.sender}`;
 
-        const messagesContainer = document.getElementById('chat-window-messages');
-        if (!messagesContainer) {
-            console.error('❌ chat-window-messages container not found');
-            return;
-        }
-
-        // Add character class to container for avatar display
-        if (message.sender === 'ai' && this.currentCharacter) {
-            const characterClass = this.getCharacterClassName(this.currentCharacter.name);
-            if (characterClass) {
-                messagesContainer.className = `chat-window-messages ${characterClass}`;
-            }
-        }
-
-        const messageElement = document.createElement('div');
-        messageElement.className = `message-bubble ${message.sender}`;
-
-        // Initial HTML structure without the text content if animating
-        messageElement.innerHTML = `
+    // Initial HTML structure without the text content if animating
+    messageElement.innerHTML = `
             <div class="bubble-content">
                 <span class="message-text">${animate ? '' : this.formatMessage(message.content)}</span>
             </div>
         `;
 
-        messagesContainer.appendChild(messageElement);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    messagesContainer.appendChild(messageElement);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-        if (animate) {
-            // Animation Phase 1: Pop in the container
-            messageElement.style.opacity = '0';
-            messageElement.style.transform = 'translateY(10px) scale(0.98)';
+    if (animate) {
+        // Animation Phase 1: Pop in the container
+        messageElement.style.opacity = '0';
+        messageElement.style.transform = 'translateY(10px) scale(0.98)';
 
-            requestAnimationFrame(() => {
-                messageElement.style.transition = 'all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)';
-                messageElement.style.opacity = '1';
-                messageElement.style.transform = 'translateY(0) scale(1)';
+        requestAnimationFrame(() => {
+            messageElement.style.transition = 'all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)';
+            messageElement.style.opacity = '1';
+            messageElement.style.transform = 'translateY(0) scale(1)';
 
-                // Animation Phase 2: Handwritten Text Effect
-                const textElement = messageElement.querySelector('.message-text');
-                const text = this.formatMessage(message.content);
-                let charIndex = 0;
+            // Animation Phase 2: Handwritten Text Effect
+            const textElement = messageElement.querySelector('.message-text');
+            const text = this.formatMessage(message.content);
+            let charIndex = 0;
 
-                // Speed calculation: faster for longer texts
-                const baseDelay = 30; // ms per char
+            // Speed calculation: faster for longer texts
+            const baseDelay = 30; // ms per char
 
-                function typeChar() {
-                    if (charIndex < text.length) {
-                        textElement.textContent += text.charAt(charIndex);
-                        charIndex++;
-                        messagesContainer.scrollTop = messagesContainer.scrollHeight; // Keep following text
-                        setTimeout(typeChar, baseDelay);
-                    }
+            function typeChar() {
+                if (charIndex < text.length) {
+                    textElement.textContent += text.charAt(charIndex);
+                    charIndex++;
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight; // Keep following text
+                    setTimeout(typeChar, baseDelay);
                 }
-
-                // Start typing after a short delay
-                setTimeout(typeChar, 150);
-            });
-        }
-
-        // Trigger speech bubble for AI messages (optional side effect)
-        if (message.sender === 'ai') {
-            if (typeof window.showSpeechBubble === 'function') {
-                window.showSpeechBubble(message.content);
             }
-        }
+
+            // Start typing after a short delay
+            setTimeout(typeChar, 150);
+        });
     }
 
-    // Character name to CSS class mapping
-    getCharacterClassName(characterName) {
-        const nameMapping = {
-            '芙莉莎': 'character-fliza',
-            'Alice': 'character-alice',
-            'Ash': 'character-ash',
-            'Bobo': 'character-bobo',
-            'Elinyaa': 'character-elinyaa',
-            'Imeris': 'character-imeris',
-            'Kyoko': 'character-kyoko',
-            'Lena': 'character-lena',
-            'Lilium': 'character-lilium',
-            'Maple': 'character-maple',
-            'Miru': 'character-miru',
-            'Miumiu': 'character-miumiu',
-            'Neco': 'character-neco',
-            'Nekona': 'character-nekona',
-            'Notia': 'character-notia',
-            'Ququ': 'character-ququ',
-            'Rainy': 'character-rainy',
-            'Rindo': 'character-rindo',
-            'Sikirei': 'character-sikirei',
-            'Vivi': 'character-vivi',
-            'Wolf': 'character-wolf',
-            'Wolferia': 'character-wolferia',
-            'Yawl': 'character-yawl',
-            'Yuu': 'character-yuu',
-            'Zwei': 'character-zwei'
-        };
-        return nameMapping[characterName] || 'character-alice';
-    }
-
-    triggerVRMResponse(message) {
-        // Integrate with VRM system
-        if (window.triggerExpression) {
-            window.triggerExpression(message.emotion || 'neutral');
-        }
-
-        if (window.speakText && message.content) {
-            window.speakText(message.content, this.currentCharacter?.voiceId);
-        }
-
-        (window.AppConfig?.debug?.log || console.log)('Trigger expression:', message.emotion);
-    }
-
-    showTypingIndicator() {
-        const indicator = document.getElementById('typing-indicator') || this.createTypingIndicator();
-        if (indicator) {
-            indicator.style.display = 'flex';
+    // Trigger speech bubble for AI messages (optional side effect)
+    if (message.sender === 'ai') {
+        if (typeof window.showSpeechBubble === 'function') {
+            window.showSpeechBubble(message.content);
         }
     }
+}
 
-    hideTypingIndicator() {
-        const indicator = document.getElementById('typing-indicator');
-        if (indicator) {
-            indicator.style.display = 'none';
-        }
+// Character name to CSS class mapping
+getCharacterClassName(characterName) {
+    const nameMapping = {
+        '芙莉莎': 'character-fliza',
+        'Alice': 'character-alice',
+        'Ash': 'character-ash',
+        'Bobo': 'character-bobo',
+        'Elinyaa': 'character-elinyaa',
+        'Imeris': 'character-imeris',
+        'Kyoko': 'character-kyoko',
+        'Lena': 'character-lena',
+        'Lilium': 'character-lilium',
+        'Maple': 'character-maple',
+        'Miru': 'character-miru',
+        'Miumiu': 'character-miumiu',
+        'Neco': 'character-neco',
+        'Nekona': 'character-nekona',
+        'Notia': 'character-notia',
+        'Ququ': 'character-ququ',
+        'Rainy': 'character-rainy',
+        'Rindo': 'character-rindo',
+        'Sikirei': 'character-sikirei',
+        'Vivi': 'character-vivi',
+        'Wolf': 'character-wolf',
+        'Wolferia': 'character-wolferia',
+        'Yawl': 'character-yawl',
+        'Yuu': 'character-yuu',
+        'Zwei': 'character-zwei'
+    };
+    return nameMapping[characterName] || 'character-alice';
+}
+
+triggerVRMResponse(message) {
+    // Integrate with VRM system
+    if (window.triggerExpression) {
+        window.triggerExpression(message.emotion || 'neutral');
     }
 
-    createTypingIndicator() {
-        const messagesContainer = document.getElementById('chat-window-messages');
-        if (!messagesContainer) return null;
+    if (window.speakText && message.content) {
+        window.speakText(message.content, this.currentCharacter?.voiceId);
+    }
 
-        const indicator = document.createElement('div');
-        indicator.id = 'typing-indicator';
-        indicator.className = 'typing-indicator';
-        indicator.innerHTML = `
+    (window.AppConfig?.debug?.log || console.log)('Trigger expression:', message.emotion);
+}
+
+showTypingIndicator() {
+    const indicator = document.getElementById('typing-indicator') || this.createTypingIndicator();
+    if (indicator) {
+        indicator.style.display = 'flex';
+    }
+}
+
+hideTypingIndicator() {
+    const indicator = document.getElementById('typing-indicator');
+    if (indicator) {
+        indicator.style.display = 'none';
+    }
+}
+
+createTypingIndicator() {
+    const messagesContainer = document.getElementById('chat-window-messages');
+    if (!messagesContainer) return null;
+
+    const indicator = document.createElement('div');
+    indicator.id = 'typing-indicator';
+    indicator.className = 'typing-indicator';
+    indicator.innerHTML = `
             <div class="typing-dots">
                 <span></span><span></span><span></span>
             </div>
             <div class="typing-text">${this.currentCharacter?.name || 'AI'} is typing...</div>
         `;
-        indicator.style.display = 'none';
+    indicator.style.display = 'none';
 
-        messagesContainer.appendChild(indicator);
-        return indicator;
-    }
+    messagesContainer.appendChild(indicator);
+    return indicator;
+}
 
-    formatMessage(content) {
-        // Format message, support emoji and links
-        return content
-            .replace(/\n/g, '<br>')
-            .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
-    }
+formatMessage(content) {
+    // Format message, support emoji and links
+    return content
+        .replace(/\n/g, '<br>')
+        .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+}
 
-    formatTime(timestamp) {
-        const date = new Date(timestamp);
-        return date.toLocaleTimeString('zh-CN', {
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    }
+formatTime(timestamp) {
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString('zh-CN', {
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
 
-    getEmotionEmoji(emotion) {
-        const emotionMap = {
-            happy: '😊',
-            sad: '😢',
-            angry: '😠',
-            love: '😍',
-            excited: '🤩',
-            neutral: '😌'
-        };
-        return emotionMap[emotion] || '😌';
-    }
+getEmotionEmoji(emotion) {
+    const emotionMap = {
+        happy: '😊',
+        sad: '😢',
+        angry: '😠',
+        love: '😍',
+        excited: '🤩',
+        neutral: '😌'
+    };
+    return emotionMap[emotion] || '😌';
+}
 
-    showError(message) {
-        console.error('🚨', message);
+showError(message) {
+    console.error('🚨', message);
 
-        // Show error toast
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        errorDiv.textContent = message;
-        errorDiv.style.cssText = `
+    // Show error toast
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.textContent = message;
+    errorDiv.style.cssText = `
             position: fixed;
             top: 50%;
             left: 50%;
@@ -698,293 +730,293 @@ class ElizaOSChatSystem {
             z-index: 10000;
         `;
 
-        document.body.appendChild(errorDiv);
+    document.body.appendChild(errorDiv);
 
-        setTimeout(() => {
-            document.body.removeChild(errorDiv);
-        }, 3000);
+    setTimeout(() => {
+        document.body.removeChild(errorDiv);
+    }, 3000);
+}
+
+
+
+// 🔗 Compatibility methods: keep old frontend working
+setCharacter(character) {
+    // 🔍 Trace call stack to find repeated callers
+    const stack = new Error().stack;
+    const caller = stack.split('\n')[2]?.trim() || 'unknown';
+    (window.AppConfig?.debug?.log || console.log)('Compat call: setCharacter ->', character.name, 'caller:', caller);
+
+    // Improved duplicate-prevention via JSON compare
+    if (this.currentCharacter) {
+        const currentId = this.currentCharacter.id || this.currentCharacter.name?.toLowerCase();
+        const newId = character.id || character.name?.toLowerCase();
+
+        if (currentId === newId) {
+            (window.AppConfig?.debug?.log || console.log)('Character already set; skip duplicate');
+            return Promise.resolve(); // keep promise interface
+        }
     }
 
-
-
-    // 🔗 Compatibility methods: keep old frontend working
-    setCharacter(character) {
-        // 🔍 Trace call stack to find repeated callers
-        const stack = new Error().stack;
-        const caller = stack.split('\n')[2]?.trim() || 'unknown';
-        (window.AppConfig?.debug?.log || console.log)('Compat call: setCharacter ->', character.name, 'caller:', caller);
-
-        // Improved duplicate-prevention via JSON compare
-        if (this.currentCharacter) {
-            const currentId = this.currentCharacter.id || this.currentCharacter.name?.toLowerCase();
-            const newId = character.id || character.name?.toLowerCase();
-
-            if (currentId === newId) {
-                (window.AppConfig?.debug?.log || console.log)('Character already set; skip duplicate');
-                return Promise.resolve(); // keep promise interface
-            }
-        }
-
-        // 🚫 Debounce to prevent frequent calls
-        if (this._setCharacterTimeout) {
-            clearTimeout(this._setCharacterTimeout);
-        }
-
-        this._setCharacterTimeout = setTimeout(() => {
-            (window.AppConfig?.debug?.log || console.log)('Applying character:', character.name);
-            this.setCurrentCharacter(character);
-            this._setCharacterTimeout = null;
-        }, 100); // 100ms debounce
-
-        return Promise.resolve();
+    // 🚫 Debounce to prevent frequent calls
+    if (this._setCharacterTimeout) {
+        clearTimeout(this._setCharacterTimeout);
     }
+
+    this._setCharacterTimeout = setTimeout(() => {
+        (window.AppConfig?.debug?.log || console.log)('Applying character:', character.name);
+        this.setCurrentCharacter(character);
+        this._setCharacterTimeout = null;
+    }, 100); // 100ms debounce
+
+    return Promise.resolve();
+}
 
     async sendMessage(message) {
-        console.log('🔥 ChatSystem V2 sendMessage被调用!', {
+    console.log('🔥 ChatSystem V2 sendMessage被调用!', {
+        message: message,
+        hasUser: !!this.currentUser,
+        hasCharacter: !!this.currentCharacter,
+        apiBaseURL: this.apiBaseURL
+    });
+
+    (window.AppConfig?.debug?.log || console.log)('Compat call: sendMessage ->', message);
+
+    if (!this.currentCharacter) {
+        (window.AppConfig?.debug?.warn || console.warn)('Character not set; cannot send');
+        return;
+    }
+
+    // Ensure user is initialized (guest or otherwise)
+    if (!this.currentUser) {
+        this.currentUser = { id: 'guest-user', profile: { name: 'Guest' } };
+    }
+
+    try {
+        // Get current UI language
+        const currentLanguage = window.i18n ? window.i18n.getCurrentLanguage() : 'en';
+
+        // Call ElizaOS chat API
+        const requestData = {
+            userId: this.currentUser.id,
+            characterId: this.currentCharacter.id,
             message: message,
-            hasUser: !!this.currentUser,
-            hasCharacter: !!this.currentCharacter,
-            apiBaseURL: this.apiBaseURL
+            language: currentLanguage
+        };
+
+        console.log('📤 发送API请求:', {
+            url: `${this.apiBaseURL}/api/chat`,
+            method: 'POST',
+            requestData
         });
 
-        (window.AppConfig?.debug?.log || console.log)('Compat call: sendMessage ->', message);
+        const response = await fetch(`${this.apiBaseURL}/api/chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestData)
+        });
 
-        if (!this.currentCharacter) {
-            (window.AppConfig?.debug?.warn || console.warn)('Character not set; cannot send');
-            return;
+        console.log('📥 收到API响应:', {
+            status: response.status,
+            statusText: response.statusText,
+            ok: response.ok
+        });
+
+        if (!response.ok) {
+            throw new Error(`Chat API error: ${response.status}`);
         }
 
-        // Ensure user is initialized (guest or otherwise)
-        if (!this.currentUser) {
-            this.currentUser = { id: 'guest-user', profile: { name: 'Guest' } };
-        }
+        const data = await response.json();
+        console.log('📦 API响应数据:', {
+            success: data.success,
+            responseText: data.data?.response?.substring(0, 100),
+            hasData: !!data.data,
+            dataKeys: Object.keys(data.data || {}),
+            fullResponse: data
+        });
+        (window.AppConfig?.debug?.log || console.log)('Compat ElizaOS response received');
 
-        try {
-            // Get current UI language
-            const currentLanguage = window.i18n ? window.i18n.getCurrentLanguage() : 'en';
-
-            // Call ElizaOS chat API
-            const requestData = {
-                userId: this.currentUser.id,
-                characterId: this.currentCharacter.id,
-                message: message,
-                language: currentLanguage
+        if (data.success && data.data) {
+            // Create user message
+            const userMessage = {
+                id: Date.now(),
+                sender: 'user',
+                content: message,
+                timestamp: new Date()
             };
 
-            console.log('📤 发送API请求:', {
-                url: `${this.apiBaseURL}/api/chat`,
-                method: 'POST',
-                requestData
-            });
+            // Create AI reply message
+            const aiMessage = {
+                id: Date.now() + 1,
+                sender: 'ai',
+                content: data.data.response,
+                timestamp: new Date(),
+                emotion: data.data.emotion,
+                audio: data.data.audio // 🎤 attach voice data
+            };
 
-            const response = await fetch(`${this.apiBaseURL}/api/chat`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestData)
-            });
+            (window.AppConfig?.debug?.log || console.log)('Prepare UI messages');
 
-            console.log('📥 收到API响应:', {
-                status: response.status,
-                statusText: response.statusText,
-                ok: response.ok
-            });
+            // Update chat UI
+            this.updateChatUI(userMessage);
+            (window.AppConfig?.debug?.log || console.log)('User message UI updated');
 
-            if (!response.ok) {
-                throw new Error(`Chat API error: ${response.status}`);
+            this.updateChatUI(aiMessage);
+            (window.AppConfig?.debug?.log || console.log)('AI message UI updated');
+
+            // 🎤 store voice and auto play
+            if (aiMessage.audio && aiMessage.audio.data) {
+                this.voiceStorage.set(aiMessage.id, aiMessage.audio);
+                (window.AppConfig?.debug?.log || console.log)('Auto-playing voice...');
+                this.playVoiceMessage(aiMessage.audio);
             }
 
-            const data = await response.json();
-            console.log('📦 API响应数据:', {
-                success: data.success,
-                responseText: data.data?.response?.substring(0, 100),
-                hasData: !!data.data,
-                dataKeys: Object.keys(data.data || {}),
-                fullResponse: data
-            });
-            (window.AppConfig?.debug?.log || console.log)('Compat ElizaOS response received');
-
-            if (data.success && data.data) {
-                // Create user message
-                const userMessage = {
-                    id: Date.now(),
-                    sender: 'user',
-                    content: message,
-                    timestamp: new Date()
-                };
-
-                // Create AI reply message
-                const aiMessage = {
-                    id: Date.now() + 1,
-                    sender: 'ai',
-                    content: data.data.response,
-                    timestamp: new Date(),
-                    emotion: data.data.emotion,
-                    audio: data.data.audio // 🎤 attach voice data
-                };
-
-                (window.AppConfig?.debug?.log || console.log)('Prepare UI messages');
-
-                // Update chat UI
-                this.updateChatUI(userMessage);
-                (window.AppConfig?.debug?.log || console.log)('User message UI updated');
-
-                this.updateChatUI(aiMessage);
-                (window.AppConfig?.debug?.log || console.log)('AI message UI updated');
-
-                // 🎤 store voice and auto play
-                if (aiMessage.audio && aiMessage.audio.data) {
-                    this.voiceStorage.set(aiMessage.id, aiMessage.audio);
-                    (window.AppConfig?.debug?.log || console.log)('Auto-playing voice...');
-                    this.playVoiceMessage(aiMessage.audio);
-                }
-
-                (window.AppConfig?.debug?.log || console.log)('ElizaOS message sent');
-                return data.data;
-            } else {
-                throw new Error(data.error || 'Send message failed');
-            }
-        } catch (error) {
-            console.error('❌ Compat sendMessage error:', error);
-            this.showError(`Send message failed: ${error.message}`);
+            (window.AppConfig?.debug?.log || console.log)('ElizaOS message sent');
+            return data.data;
+        } else {
+            throw new Error(data.error || 'Send message failed');
         }
+    } catch (error) {
+        console.error('❌ Compat sendMessage error:', error);
+        this.showError(`Send message failed: ${error.message}`);
     }
+}
 
     async getUserStats() {
-        (window.AppConfig?.debug?.log || console.log)('Compat call: getUserStats');
-        // Return basic stats
-        return {
-            totalInteractions: this.chatHistory.length,
-            lastInteraction: Date.now()
-        };
-    }
+    (window.AppConfig?.debug?.log || console.log)('Compat call: getUserStats');
+    // Return basic stats
+    return {
+        totalInteractions: this.chatHistory.length,
+        lastInteraction: Date.now()
+    };
+}
 
     // waitingForWallet property compatibility
     get waitingForWallet() {
-        return !this.currentUser;
-    }
+    return !this.currentUser;
+}
 
     set waitingForWallet(value) {
-        // Compatibility setter; no-op
-        (window.AppConfig?.debug?.log || console.log)('Compat set: waitingForWallet =', value);
+    // Compatibility setter; no-op
+    (window.AppConfig?.debug?.log || console.log)('Compat set: waitingForWallet =', value);
+}
+
+// 🎤 Voice playback functions
+playVoiceMessage(audioData) {
+    try {
+        (window.AppConfig?.debug?.log || console.log)('Start playing voice...', {
+            mimeType: audioData.mimeType,
+            dataLength: audioData.data.length,
+            voiceId: audioData.voiceId
+        });
+
+        this.tryPlayAudio(audioData);
+
+    } catch (error) {
+        console.error('❌ Voice processing failed:', error);
     }
-
-    // 🎤 Voice playback functions
-    playVoiceMessage(audioData) {
-        try {
-            (window.AppConfig?.debug?.log || console.log)('Start playing voice...', {
-                mimeType: audioData.mimeType,
-                dataLength: audioData.data.length,
-                voiceId: audioData.voiceId
-            });
-
-            this.tryPlayAudio(audioData);
-
-        } catch (error) {
-            console.error('❌ Voice processing failed:', error);
-        }
-    }
+}
 
     // 🎤 Try multiple playback methods
     async tryPlayAudio(audioData) {
-        const uint8Array = new Uint8Array(audioData.data);
+    const uint8Array = new Uint8Array(audioData.data);
 
-        // Method 1: Blob URL (original approach)
-        try {
-            (window.AppConfig?.debug?.log || console.log)('Try method 1: Blob URL');
-            const arrayBuffer = uint8Array.buffer;
-            const blob = new Blob([arrayBuffer], { type: audioData.mimeType });
-            const audioUrl = URL.createObjectURL(blob);
+    // Method 1: Blob URL (original approach)
+    try {
+        (window.AppConfig?.debug?.log || console.log)('Try method 1: Blob URL');
+        const arrayBuffer = uint8Array.buffer;
+        const blob = new Blob([arrayBuffer], { type: audioData.mimeType });
+        const audioUrl = URL.createObjectURL(blob);
 
-            const audio = new Audio();
-            audio.volume = 0.8;
+        const audio = new Audio();
+        audio.volume = 0.8;
 
-            // Set callbacks
-            audio.onplay = () => {
-                (window.AppConfig?.debug?.log || console.log)('Voice started (Blob URL)');
-                this.showVoiceStatus('🎵 Playing...');
-            };
+        // Set callbacks
+        audio.onplay = () => {
+            (window.AppConfig?.debug?.log || console.log)('Voice started (Blob URL)');
+            this.showVoiceStatus('🎵 Playing...');
+        };
 
-            audio.onended = () => {
-                (window.AppConfig?.debug?.log || console.log)('Voice finished');
-                this.hideVoiceStatus();
-                URL.revokeObjectURL(audioUrl);
-            };
+        audio.onended = () => {
+            (window.AppConfig?.debug?.log || console.log)('Voice finished');
+            this.hideVoiceStatus();
+            URL.revokeObjectURL(audioUrl);
+        };
 
-            audio.onerror = (error) => {
-                (window.AppConfig?.debug?.warn || console.warn)('Blob URL method failed, try fallback:', error);
-                URL.revokeObjectURL(audioUrl);
-                this.tryPlayAudioFallback(audioData);
-            };
-
-            audio.src = audioUrl;
-            await audio.play();
-            return;
-
-        } catch (blobError) {
-            (window.AppConfig?.debug?.warn || console.warn)('Blob URL method failed, try fallback:', blobError);
+        audio.onerror = (error) => {
+            (window.AppConfig?.debug?.warn || console.warn)('Blob URL method failed, try fallback:', error);
+            URL.revokeObjectURL(audioUrl);
             this.tryPlayAudioFallback(audioData);
-        }
+        };
+
+        audio.src = audioUrl;
+        await audio.play();
+        return;
+
+    } catch (blobError) {
+        (window.AppConfig?.debug?.warn || console.warn)('Blob URL method failed, try fallback:', blobError);
+        this.tryPlayAudioFallback(audioData);
     }
+}
 
-    // 🎤 Fallback playback method
-    tryPlayAudioFallback(audioData) {
-        try {
-            (window.AppConfig?.debug?.log || console.log)('Try method 2: Data URL');
+// 🎤 Fallback playback method
+tryPlayAudioFallback(audioData) {
+    try {
+        (window.AppConfig?.debug?.log || console.log)('Try method 2: Data URL');
 
-            // Method 2: Data URL
-            const uint8Array = new Uint8Array(audioData.data);
-            let binaryString = '';
-            for (let i = 0; i < uint8Array.length; i++) {
-                binaryString += String.fromCharCode(uint8Array[i]);
-            }
-
-            const base64 = btoa(binaryString);
-            const dataUrl = `data:${audioData.mimeType};base64,${base64}`;
-
-            const audio = new Audio();
-            audio.volume = 0.8;
-
-            audio.onplay = () => {
-                (window.AppConfig?.debug?.log || console.log)('Voice started (Data URL)');
-                this.showVoiceStatus('🎵 Playing...');
-            };
-
-            audio.onended = () => {
-                (window.AppConfig?.debug?.log || console.log)('Voice finished');
-                this.hideVoiceStatus();
-            };
-
-            audio.onerror = (error) => {
-                console.error('❌ Data URL method also failed:', error);
-                this.showVoiceStatus('❌ Voice playback failed');
-                setTimeout(() => this.hideVoiceStatus(), 3000);
-            };
-
-            audio.src = dataUrl;
-            audio.play().catch(error => {
-                console.error('❌ Data URL playback start failed:', error);
-                this.showVoiceStatus('❌ Voice playback failed');
-                setTimeout(() => this.hideVoiceStatus(), 3000);
-            });
-
-        } catch (fallbackError) {
-            console.error('❌ All voice playback methods failed:', fallbackError);
-            // Create用户交互播放按钮
-            this.showInteractivePlayButton(audioData);
+        // Method 2: Data URL
+        const uint8Array = new Uint8Array(audioData.data);
+        let binaryString = '';
+        for (let i = 0; i < uint8Array.length; i++) {
+            binaryString += String.fromCharCode(uint8Array[i]);
         }
+
+        const base64 = btoa(binaryString);
+        const dataUrl = `data:${audioData.mimeType};base64,${base64}`;
+
+        const audio = new Audio();
+        audio.volume = 0.8;
+
+        audio.onplay = () => {
+            (window.AppConfig?.debug?.log || console.log)('Voice started (Data URL)');
+            this.showVoiceStatus('🎵 Playing...');
+        };
+
+        audio.onended = () => {
+            (window.AppConfig?.debug?.log || console.log)('Voice finished');
+            this.hideVoiceStatus();
+        };
+
+        audio.onerror = (error) => {
+            console.error('❌ Data URL method also failed:', error);
+            this.showVoiceStatus('❌ Voice playback failed');
+            setTimeout(() => this.hideVoiceStatus(), 3000);
+        };
+
+        audio.src = dataUrl;
+        audio.play().catch(error => {
+            console.error('❌ Data URL playback start failed:', error);
+            this.showVoiceStatus('❌ Voice playback failed');
+            setTimeout(() => this.hideVoiceStatus(), 3000);
+        });
+
+    } catch (fallbackError) {
+        console.error('❌ All voice playback methods failed:', fallbackError);
+        // Create用户交互播放按钮
+        this.showInteractivePlayButton(audioData);
     }
+}
 
-    // 🎤 Show interactive play button
-    showInteractivePlayButton(audioData) {
-        (window.AppConfig?.debug?.log || console.log)('Show user-interaction play button');
+// 🎤 Show interactive play button
+showInteractivePlayButton(audioData) {
+    (window.AppConfig?.debug?.log || console.log)('Show user-interaction play button');
 
-        // Create play button
-        let playButton = document.getElementById('interactive-voice-play');
-        if (!playButton) {
-            playButton = document.createElement('button');
-            playButton.id = 'interactive-voice-play';
-            playButton.innerHTML = '🎵 Click to play voice';
-            playButton.style.cssText = `
+    // Create play button
+    let playButton = document.getElementById('interactive-voice-play');
+    if (!playButton) {
+        playButton = document.createElement('button');
+        playButton.id = 'interactive-voice-play';
+        playButton.innerHTML = '🎵 Click to play voice';
+        playButton.style.cssText = `
                 position: fixed;
                 top: 80px;
                 right: 20px;
@@ -1002,9 +1034,9 @@ class ElizaOSChatSystem {
                 animation: pulse 2s infinite;
             `;
 
-            // 添加CSS动画
-            const style = document.createElement('style');
-            style.textContent = `
+        // 添加CSS动画
+        const style = document.createElement('style');
+        style.textContent = `
                 @keyframes pulse {
                     0% { transform: scale(1); }
                     50% { transform: scale(1.05); }
@@ -1015,76 +1047,76 @@ class ElizaOSChatSystem {
                     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
                 }
             `;
-            document.head.appendChild(style);
-            document.body.appendChild(playButton);
-        }
+        document.head.appendChild(style);
+        document.body.appendChild(playButton);
+    }
 
-        // Update button handler
-        playButton.onclick = () => {
-            (window.AppConfig?.debug?.log || console.log)('User clicked play voice');
-            this.forcePlayAudio(audioData);
+    // Update button handler
+    playButton.onclick = () => {
+        (window.AppConfig?.debug?.log || console.log)('User clicked play voice');
+        this.forcePlayAudio(audioData);
+        playButton.remove();
+    };
+
+    // Auto hide after 5 seconds
+    setTimeout(() => {
+        if (playButton && playButton.parentNode) {
             playButton.remove();
+        }
+    }, 10000);
+}
+
+// 🎤 Force play (needs user interaction)
+forcePlayAudio(audioData) {
+    try {
+        (window.AppConfig?.debug?.log || console.log)('Force play audio (user interaction)');
+
+        // Use simplest approach to play
+        const uint8Array = new Uint8Array(audioData.data);
+        const arrayBuffer = uint8Array.buffer;
+        const blob = new Blob([arrayBuffer], { type: audioData.mimeType });
+
+        // Create temp URL
+        const audioUrl = URL.createObjectURL(blob);
+        const audio = new Audio(audioUrl);
+        audio.volume = 0.8;
+
+        audio.onplay = () => {
+            (window.AppConfig?.debug?.log || console.log)('User-interaction voice playback success');
+            this.showVoiceStatus('🎵 Playing...');
         };
 
-        // Auto hide after 5 seconds
-        setTimeout(() => {
-            if (playButton && playButton.parentNode) {
-                playButton.remove();
-            }
-        }, 10000);
-    }
+        audio.onended = () => {
+            (window.AppConfig?.debug?.log || console.log)('Voice playback finished');
+            this.hideVoiceStatus();
+            URL.revokeObjectURL(audioUrl);
+        };
 
-    // 🎤 Force play (needs user interaction)
-    forcePlayAudio(audioData) {
-        try {
-            (window.AppConfig?.debug?.log || console.log)('Force play audio (user interaction)');
-
-            // Use simplest approach to play
-            const uint8Array = new Uint8Array(audioData.data);
-            const arrayBuffer = uint8Array.buffer;
-            const blob = new Blob([arrayBuffer], { type: audioData.mimeType });
-
-            // Create temp URL
-            const audioUrl = URL.createObjectURL(blob);
-            const audio = new Audio(audioUrl);
-            audio.volume = 0.8;
-
-            audio.onplay = () => {
-                (window.AppConfig?.debug?.log || console.log)('User-interaction voice playback success');
-                this.showVoiceStatus('🎵 Playing...');
-            };
-
-            audio.onended = () => {
-                (window.AppConfig?.debug?.log || console.log)('Voice playback finished');
-                this.hideVoiceStatus();
-                URL.revokeObjectURL(audioUrl);
-            };
-
-            audio.onerror = (error) => {
-                console.error('❌ User-interaction playback also failed:', error);
-                URL.revokeObjectURL(audioUrl);
-                this.showVoiceStatus('❌ Voice playback failed');
-                setTimeout(() => this.hideVoiceStatus(), 3000);
-            };
-
-            // As it's user-interaction triggered, should succeed
-            audio.play();
-
-        } catch (error) {
-            console.error('❌ Force play failed:', error);
-            this.showVoiceStatus('❌ 语音播放失败');
+        audio.onerror = (error) => {
+            console.error('❌ User-interaction playback also failed:', error);
+            URL.revokeObjectURL(audioUrl);
+            this.showVoiceStatus('❌ Voice playback failed');
             setTimeout(() => this.hideVoiceStatus(), 3000);
-        }
-    }
+        };
 
-    // 显示语音状态
-    showVoiceStatus(message) {
-        // Create或更新语音状态显示
-        let voiceStatus = document.getElementById('voice-status');
-        if (!voiceStatus) {
-            voiceStatus = document.createElement('div');
-            voiceStatus.id = 'voice-status';
-            voiceStatus.style.cssText = `
+        // As it's user-interaction triggered, should succeed
+        audio.play();
+
+    } catch (error) {
+        console.error('❌ Force play failed:', error);
+        this.showVoiceStatus('❌ 语音播放失败');
+        setTimeout(() => this.hideVoiceStatus(), 3000);
+    }
+}
+
+// 显示语音状态
+showVoiceStatus(message) {
+    // Create或更新语音状态显示
+    let voiceStatus = document.getElementById('voice-status');
+    if (!voiceStatus) {
+        voiceStatus = document.createElement('div');
+        voiceStatus.id = 'voice-status';
+        voiceStatus.style.cssText = `
                 position: fixed;
                 top: 20px;
                 right: 20px;
@@ -1097,19 +1129,19 @@ class ElizaOSChatSystem {
                 box-shadow: 0 2px 10px rgba(0,0,0,0.2);
                 animation: fadeIn 0.3s ease;
             `;
-            document.body.appendChild(voiceStatus);
-        }
-        voiceStatus.textContent = message;
-        voiceStatus.style.display = 'block';
+        document.body.appendChild(voiceStatus);
     }
+    voiceStatus.textContent = message;
+    voiceStatus.style.display = 'block';
+}
 
-    // 隐藏语音状态
-    hideVoiceStatus() {
-        const voiceStatus = document.getElementById('voice-status');
-        if (voiceStatus) {
-            voiceStatus.style.display = 'none';
-        }
+// 隐藏语音状态
+hideVoiceStatus() {
+    const voiceStatus = document.getElementById('voice-status');
+    if (voiceStatus) {
+        voiceStatus.style.display = 'none';
     }
+}
 }
 
 // Create全局实例
