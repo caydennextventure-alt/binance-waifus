@@ -17,6 +17,10 @@
     {
       "source": "/chat",
       "destination": "/chat.html"
+    },
+    {
+      "source": "/font/(.*)",
+      "destination": "/public/font/$1"
     }
   ],
   "env": {
@@ -29,7 +33,10 @@
     "MEMORY_LIMIT": "1024",
     "LOG_LEVEL": "INFO"
   },
-  "regions": ["hkg1", "sin1"],
+  "regions": [
+    "hkg1",
+    "sin1"
+  ],
   "headers": [
     {
       "source": "/(.*)",
