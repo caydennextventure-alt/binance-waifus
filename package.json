@@ -6,7 +6,7 @@
   "description": "VRM AI女友系统 - ElizaOS完整版",
   "dependencies": {
     "@ai16z/eliza": "^0.1.5",
-    "@google/genai": "^1.35.0",
+    "@google/generative-ai": "^0.24.1",
     "@supabase/supabase-js": "^2.38.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",

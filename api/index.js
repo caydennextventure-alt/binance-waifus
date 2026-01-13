@@ -1,8 +1,8 @@
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { getCharacterPrompt } from '../lib/characters.js';
 
 // Initialize Gemini client
-const genai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 export default async function handler(req, res) {
   console.log('📥 API Request:', req.method, req.url);
@@ -40,46 +40,42 @@ export default async function handler(req, res) {
       const targetCharacterId = characterId || 'alice';
       const systemPrompt = getCharacterPrompt(targetCharacterId);
 
-      // Build conversation history for Gemini
-      const contents = [];
-
-      // Add history messages
-      if (history && history.length > 0) {
-        for (const msg of history) {
-          contents.push({
-            role: msg.role === 'user' ? 'user' : 'model',
-            parts: [{ text: msg.text || msg.content }]
-          });
-        }
-      }
-
-      // Add current user message
-      contents.push({
-        role: 'user',
-        parts: [{ text: message }]
+      // Initialize the model
+      const modelName = 'gemini-3-pro-preview';
+      const model = genAI.getGenerativeModel({
+        model: modelName,
+        systemInstruction: systemPrompt
       });
 
-      const response = await genai.models.generateContent({
-        model: 'gemini-2.5-pro-preview-05-06',
-        contents: contents,
-        config: {
-          systemInstruction: systemPrompt,
-          maxOutputTokens: 200,
-          temperature: 0.7,
-        }
+      // Prepare chat history
+      const prevMessages = (history || []).map(msg => ({
+        role: msg.role === 'user' ? 'user' : 'model',
+        parts: [{ text: msg.text || msg.content }]
+      }));
+
+      // Start chat
+      const chat = model.startChat({
+        history: prevMessages,
       });
 
-      const reply = response.text;
+      console.log(`📡 Calling Gemini (${modelName})...`);
+      const result = await chat.sendMessage(message);
+      const reply = result.response.text();
 
       return res.status(200).json({
         text: reply,
         characterId: targetCharacterId,
-        action: "NONE" // Placeholder for future actions
+        action: "NONE"
       });
 
     } catch (error) {
       console.error('Error processing chat:', error);
-      return res.status(500).json({ error: 'Internal Server Error', details: error.message });
+      // Return a structured error response
+      return res.status(500).json({
+        error: 'Gemini API Error',
+        details: error.message,
+        message: 'Could not reach the agent. Please check your API key or model name.'
+      });
     }
   }
 
@@ -97,7 +93,7 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'ElevenLabs API key not configured' });
       }
 
-      const targetVoiceId = voiceId || 'rEJAAHKQqr6yTNCh8xS0'; // Default voice
+      const targetVoiceId = voiceId || 'rEJAAHKQqr6yTNCh8xS0';
 
       const response = await fetch(
         `https://api.elevenlabs.io/v1/text-to-speech/${targetVoiceId}`,
