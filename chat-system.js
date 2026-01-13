@@ -52,7 +52,7 @@ class ChatSystem {
         this.inputField.value = '';
         this.isProcessing = true;
 
-        // 2. Show Typing Indicator (Optional, simplified)
+        // 2. Show Typing Indicator
         const loadingId = this.appendLoadingMessage();
 
         try {
@@ -77,7 +77,7 @@ class ChatSystem {
             // 4. Remove Loading & Add AI Message
             this.removeMessage(loadingId);
             const reply = data.text || "I'm not sure what to say...";
-            this.appendMessage('assistant', reply);
+            this.appendMessage('ai', reply);
 
             // 5. Speak (if VoiceManager exists)
             if (window.voiceManager) {
@@ -91,19 +91,17 @@ class ChatSystem {
         } catch (error) {
             console.error('❌ Chat Error:', error);
             this.removeMessage(loadingId);
-            this.appendMessage('system', 'Error: Could not reach the agent.');
+            this.appendMessage('ai', 'Error: Could not reach the agent.');
         } finally {
             this.isProcessing = false;
         }
     }
 
     getCurrentCharacterId() {
-        // Read from the actual localStorage key used by index.html
         try {
             const stored = localStorage.getItem('selectedCharacter');
             if (stored) {
                 const data = JSON.parse(stored);
-                console.log('📌 Current character:', data.id || data.name);
                 return data.id || data.name?.toLowerCase() || 'alice';
             }
         } catch (e) {
@@ -116,22 +114,21 @@ class ChatSystem {
         if (!this.messagesContainer) return;
 
         const msgDiv = document.createElement('div');
-        msgDiv.className = `message ${role}-message`;
+        msgDiv.className = `message-bubble ${role}`;
 
-        // Assistant (AI) gets the "writing" effect
-        if (role === 'assistant') {
-            msgDiv.classList.add('writing');
-            const contentDiv = document.createElement('div');
-            contentDiv.className = 'message-content';
-            // contentDiv.style.fontFamily removed
-            msgDiv.appendChild(contentDiv);
-            this.messagesContainer.appendChild(msgDiv);
+        // Ensure visibility (some CSS sets opacity: 0)
+        msgDiv.style.opacity = '1';
 
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'bubble-content';
+        msgDiv.appendChild(contentDiv);
+
+        this.messagesContainer.appendChild(msgDiv);
+
+        if (role === 'ai' && !text.startsWith('Error:')) {
             this.typeTextWithPencil(contentDiv, text);
         } else {
-            // User message (Instant)
-            msgDiv.innerHTML = `<div class="message-content">${this.escapeHtml(text)}</div>`;
-            this.messagesContainer.appendChild(msgDiv);
+            contentDiv.textContent = text;
         }
 
         this.scrollToBottom();
@@ -146,7 +143,7 @@ class ChatSystem {
 
         for (let i = 0; i < text.length; i++) {
             cursor.before(text[i]);
-            await new Promise(r => setTimeout(r, Math.random() * 50 + 30));
+            await new Promise(r => setTimeout(r, Math.random() * 30 + 20));
             this.scrollToBottom();
         }
 
@@ -157,9 +154,17 @@ class ChatSystem {
         if (!this.messagesContainer) return;
 
         const msgDiv = document.createElement('div');
-        msgDiv.className = 'message assistant-message loading';
+        msgDiv.className = 'message-bubble ai loading';
+        msgDiv.style.opacity = '1';
         msgDiv.id = 'loading-' + Date.now();
-        msgDiv.innerHTML = '<div class="message-content">...</div>';
+
+        msgDiv.innerHTML = `
+            <div class="bubble-content">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        `;
 
         this.messagesContainer.appendChild(msgDiv);
         this.scrollToBottom();

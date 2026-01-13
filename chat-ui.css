@@ -352,6 +352,47 @@
     transform: rotate(0.5deg);
 }
 
+/* Thinking Indicator */
+.message-bubble.ai.loading .bubble-content {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 15px;
+    min-height: 40px;
+}
+
+.typing-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--ink-color-ai);
+    border-radius: 50%;
+    animation: typingBounce 1.4s infinite ease-in-out both;
+    opacity: 0.7;
+}
+
+.typing-dot:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+@keyframes typingBounce {
+
+    0%,
+    80%,
+    100% {
+        transform: scale(0);
+        opacity: 0.3;
+    }
+
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 .message-bubble.user .bubble-content::after,
 .message-bubble.ai .bubble-content::after,
 .sender-name,
