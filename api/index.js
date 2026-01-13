@@ -1,11 +1,8 @@
-import { OpenAI } from 'openai';
+import { GoogleGenAI } from '@google/genai';
 import { getCharacterPrompt } from '../lib/characters.js';
 
-// Initialize OpenAI client
-// Note: Vercel/Next.js automatically loads process.env variables
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Initialize Gemini client
+const genai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 export default async function handler(req, res) {
   console.log('📥 API Request:', req.method, req.url);
@@ -27,7 +24,7 @@ export default async function handler(req, res) {
 
   // Health check endpoint
   if (req.url.endsWith('/health')) {
-    res.status(200).json({ status: 'ok', service: 'Direct LLM Agent' });
+    res.status(200).json({ status: 'ok', service: 'Gemini 3 Pro Agent' });
     return;
   }
 
@@ -43,24 +40,36 @@ export default async function handler(req, res) {
       const targetCharacterId = characterId || 'alice';
       const systemPrompt = getCharacterPrompt(targetCharacterId);
 
-      // Construct messages array
-      const messages = [
-        { role: 'system', content: systemPrompt },
-        ...(history || []).map(msg => ({
-          role: msg.role === 'user' ? 'user' : 'assistant',
-          content: msg.text || msg.content
-        })),
-        { role: 'user', content: message }
-      ];
+      // Build conversation history for Gemini
+      const contents = [];
 
-      const completion = await openai.chat.completions.create({
-        model: "gpt-4o-mini", // Fast and cost-effective
-        messages: messages,
-        max_tokens: 200,
-        temperature: 0.7,
+      // Add history messages
+      if (history && history.length > 0) {
+        for (const msg of history) {
+          contents.push({
+            role: msg.role === 'user' ? 'user' : 'model',
+            parts: [{ text: msg.text || msg.content }]
+          });
+        }
+      }
+
+      // Add current user message
+      contents.push({
+        role: 'user',
+        parts: [{ text: message }]
       });
 
-      const reply = completion.choices[0].message.content;
+      const response = await genai.models.generateContent({
+        model: 'gemini-2.5-pro-preview-05-06',
+        contents: contents,
+        config: {
+          systemInstruction: systemPrompt,
+          maxOutputTokens: 200,
+          temperature: 0.7,
+        }
+      });
+
+      const reply = response.text;
 
       return res.status(200).json({
         text: reply,
