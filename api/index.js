@@ -1,8 +1,10 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { OpenAI } from 'openai';
 import { getCharacterPrompt } from '../lib/characters.js';
 
-// Initialize Gemini client
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+// Initialize OpenAI client
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 export default async function handler(req, res) {
   console.log('📥 API Request:', req.method, req.url);
@@ -24,7 +26,7 @@ export default async function handler(req, res) {
 
   // Health check endpoint
   if (req.url.endsWith('/health')) {
-    res.status(200).json({ status: 'ok', service: 'Gemini 3 Pro Agent' });
+    res.status(200).json({ status: 'ok', service: 'GPT-4o AI Girlfriend' });
     return;
   }
 
@@ -40,27 +42,25 @@ export default async function handler(req, res) {
       const targetCharacterId = characterId || 'alice';
       const systemPrompt = getCharacterPrompt(targetCharacterId);
 
-      // Initialize the model
-      const modelName = 'gemini-3-pro-preview';
-      const model = genAI.getGenerativeModel({
-        model: modelName,
-        systemInstruction: systemPrompt
+      // Construct messages array for OpenAI
+      const messages = [
+        { role: 'system', content: systemPrompt },
+        ...(history || []).map(msg => ({
+          role: msg.role === 'user' ? 'user' : 'assistant',
+          content: msg.text || msg.content
+        })),
+        { role: 'user', content: message }
+      ];
+
+      console.log(`📡 Calling OpenAI (gpt-4o)...`);
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: messages,
+        max_tokens: 250,
+        temperature: 0.7,
       });
 
-      // Prepare chat history
-      const prevMessages = (history || []).map(msg => ({
-        role: msg.role === 'user' ? 'user' : 'model',
-        parts: [{ text: msg.text || msg.content }]
-      }));
-
-      // Start chat
-      const chat = model.startChat({
-        history: prevMessages,
-      });
-
-      console.log(`📡 Calling Gemini (${modelName})...`);
-      const result = await chat.sendMessage(message);
-      const reply = result.response.text();
+      const reply = completion.choices[0].message.content;
 
       return res.status(200).json({
         text: reply,
@@ -70,11 +70,10 @@ export default async function handler(req, res) {
 
     } catch (error) {
       console.error('Error processing chat:', error);
-      // Return a structured error response
       return res.status(500).json({
-        error: 'Gemini API Error',
+        error: 'OpenAI API Error',
         details: error.message,
-        message: 'Could not reach the agent. Please check your API key or model name.'
+        message: 'Could not reach the agent. Please check your API key.'
       });
     }
   }
