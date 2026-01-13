@@ -459,13 +459,21 @@
         font-size: 1rem;
         padding: 8px 12px;
     }
+
+    /* Hide music player and language toggle on mobile */
+    .music-controls,
+    #music-controls,
+    .language-toggle,
+    #language-toggle {
+        display: none !important;
+    }
 }
 
 /* Small Mobile */
 @media (max-width: 480px) {
     .notebook-wrapper {
-        height: 50vh;
-        /* Even smaller for tiny phones */
+        height: 55vh;
+        /* A bit more space for chat */
         border-radius: 15px 15px 0 0;
     }
 
@@ -474,10 +482,36 @@
     }
 
     .chat-window-messages {
-        max-height: 25vh;
+        max-height: 30vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     .message-content {
         font-size: 1rem !important;
+        line-height: 1.4;
+    }
+
+    /* Hide controls on small mobile too */
+    .music-controls,
+    #music-controls,
+    .language-toggle,
+    #language-toggle {
+        display: none !important;
+    }
+
+    /* Compact input area */
+    .chat-input-area {
+        padding: 8px;
+    }
+
+    .handwritten-input {
+        font-size: 0.95rem;
+        padding: 8px 10px;
+    }
+
+    .doodle-send-btn {
+        width: 35px;
+        height: 35px;
     }
 }
