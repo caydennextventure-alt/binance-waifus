@@ -58,14 +58,23 @@ export default async function handler(req, res) {
         messages: messages,
         max_tokens: 250,
         temperature: 0.7,
+        response_format: { type: "json_object" },
       });
 
-      const reply = completion.choices[0].message.content;
+      const rawReply = completion.choices[0].message.content;
+      console.log('🤖 Raw AI Reply:', rawReply);
+
+      let replyData;
+      try {
+        replyData = JSON.parse(rawReply);
+      } catch (e) {
+        replyData = { text: rawReply, action: "NONE" };
+      }
 
       return res.status(200).json({
-        text: reply,
+        text: replyData.text || replyData.message || rawReply,
         characterId: targetCharacterId,
-        action: "NONE"
+        action: replyData.action || "NONE"
       });
 
     } catch (error) {

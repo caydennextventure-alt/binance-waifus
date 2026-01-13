@@ -106,7 +106,12 @@ class ChatSystem {
             const reply = data.text || "I'm not sure what to say...";
             this.appendMessage('ai', reply);
 
-            // 5. Generate and Play Voice
+            // 5. Trigger Animation/Action
+            if (window.triggerAIAction) {
+                window.triggerAIAction(data.action || "NONE");
+            }
+
+            // 6. Generate and Play Voice
             this.speak(reply, currentCharacterId);
 
             // Update History

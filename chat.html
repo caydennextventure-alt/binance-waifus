@@ -2858,6 +2858,20 @@
             }
         }
 
+        // --- EXPOSE TO GLOBAL WINDOW ---
+        window.loadAnimation = loadAnimation;
+        window.setExpression = setExpression;
+        window.triggerAIAction = function (actionName) {
+            if (!actionName || actionName === 'NONE') return;
+            console.log('🎭 AI Action Triggered:', actionName);
+            const lower = actionName.toLowerCase();
+            if (emotionAnimationMap[lower]) {
+                loadAnimation(emotionAnimationMap[lower], lower);
+            } else if (animationMap[actionName]) {
+                loadAnimation(animationMap[actionName]);
+            }
+        };
+
         // VRM character列表
         const vrmCharacters = {
             'Alice': 'Main VRM/Alice.vrm',
