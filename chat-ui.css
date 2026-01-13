@@ -83,7 +83,7 @@
 
     display: flex;
     z-index: 1000;
-    font-family: 'Gochi Hand', 'Gloria Hallelujah', cursive;
+    font-family: var(--handwriting-font);
     overflow: visible;
 }
 
@@ -335,7 +335,7 @@
 
 .message-bubble.user .bubble-content {
     color: var(--ink-color-user);
-    font-family: 'Gochi Hand', cursive;
+    font-family: var(--handwriting-font);
     /* Messy handwriting */
     transform: rotate(-1deg);
 }
@@ -347,7 +347,7 @@
 
 .message-bubble.ai .bubble-content {
     color: var(--ink-color-ai);
-    font-family: 'Indie Flower', cursive;
+    font-family: var(--handwriting-font);
     /* AI's neater handwriting */
     transform: rotate(0.5deg);
 }
@@ -434,7 +434,7 @@
 .handwritten-input::placeholder {
     color: #b2bec3;
     font-style: italic;
-    font-family: 'Gochi Hand', cursive;
+    font-family: var(--handwriting-font);
 }
 
 .doodle-send-btn {
