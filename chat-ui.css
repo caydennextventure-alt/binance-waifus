@@ -413,16 +413,71 @@
 }
 
 
-/* Mobile */
-@media (max-width: 480px) {
+/* Mobile Portrait */
+@media (max-width: 768px) and (orientation: portrait) {
     .notebook-wrapper {
+        position: fixed;
         width: 100vw;
-        height: 100vh;
+        height: 55vh;
+        /* Only bottom portion */
         bottom: 0;
         right: 0;
         left: 0;
+        top: auto;
         transform: none;
-        border-radius: 0;
-        box-shadow: none;
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.2);
+        padding: 15px;
+    }
+
+    .notebook-paper {
+        padding: 15px 10px;
+    }
+
+    .header-area {
+        padding: 10px 15px;
+    }
+
+    .header-title {
+        font-size: 1.5rem;
+    }
+
+    .chat-window-messages {
+        max-height: 30vh;
+        padding: 10px;
+    }
+
+    .message-content {
+        font-size: 1.1rem !important;
+    }
+
+    .chat-input-area {
+        padding: 10px;
+    }
+
+    .handwritten-input {
+        font-size: 1rem;
+        padding: 8px 12px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .notebook-wrapper {
+        height: 50vh;
+        /* Even smaller for tiny phones */
+        border-radius: 15px 15px 0 0;
+    }
+
+    .header-title {
+        font-size: 1.3rem;
+    }
+
+    .chat-window-messages {
+        max-height: 25vh;
+    }
+
+    .message-content {
+        font-size: 1rem !important;
     }
 }
